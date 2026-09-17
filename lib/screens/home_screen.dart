@@ -59,24 +59,22 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      // TODO(sesion-03): borra la línea de abajo y descomenta el bloque completo. (Paso 3 — estados loading/vacío/error)
-      body: const Center(child: Text('Cargando lugares...')),
-      // body: FutureBuilder<List<Place>>(
-      //   future: _futuroLugares,
-      //   builder: (context, snapshot) {
-      //     if (snapshot.connectionState == ConnectionState.waiting) {
-      //       return const LoadingView(mensaje: 'Buscando lugares cercanos...');
-      //     }
-      //     if (snapshot.hasError) {
-      //       return ErrorView(mensaje: '${snapshot.error}', onReintentar: _cargar);
-      //     }
-      //     final lugares = snapshot.data ?? [];
-      //     if (lugares.isEmpty) {
-      //       return const EmptyView(mensaje: 'Todavía no hay lugares guardados');
-      //     }
-      //     return _buildLista(lugares);
-      //   },
-      // ),
+      body: FutureBuilder<List<Place>>(
+        future: _futuroLugares,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const LoadingView(mensaje: 'Buscando lugares cercanos...');
+          }
+          if (snapshot.hasError) {
+            return ErrorView(mensaje: '${snapshot.error}', onReintentar: _cargar);
+          }
+          final lugares = snapshot.data ?? [];
+          if (lugares.isEmpty) {
+            return const EmptyView(mensaje: 'Todavía no hay lugares guardados');
+          }
+          return _buildLista(lugares);
+        },
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           await Navigator.push(
@@ -90,31 +88,26 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // TODO(sesion-03): borra la línea de abajo y descomenta el bloque completo. (Paso 4 — layout responsivo)
-  Widget _buildLista(List<Place> lugares) => ListView.builder(
-        itemCount: lugares.length,
-        itemBuilder: (context, index) => PlaceCard(place: lugares[index]),
-      );
-  // Widget _buildLista(List<Place> lugares) {
-  //   return LayoutBuilder(
-  //     builder: (context, constraints) {
-  //       if (constraints.maxWidth < 600) {
-  //         return ListView.builder(
-  //           itemCount: lugares.length,
-  //           itemBuilder: (context, index) => PlaceCard(place: lugares[index]),
-  //         );
-  //       }
-  //       final columnas = constraints.maxWidth < 900 ? 2 : 3;
-  //       return GridView.builder(
-  //         padding: const EdgeInsets.all(AppSpacing.sm),
-  //         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-  //           crossAxisCount: columnas,
-  //           childAspectRatio: 2.4,
-  //         ),
-  //         itemCount: lugares.length,
-  //         itemBuilder: (context, index) => PlaceCard(place: lugares[index]),
-  //       );
-  //     },
-  //   );
-  // }
+  Widget _buildLista(List<Place> lugares) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (constraints.maxWidth < 600) {
+          return ListView.builder(
+            itemCount: lugares.length,
+            itemBuilder: (context, index) => PlaceCard(place: lugares[index]),
+          );
+        }
+        final columnas = constraints.maxWidth < 900 ? 2 : 3;
+        return GridView.builder(
+          padding: const EdgeInsets.all(AppSpacing.sm),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: columnas,
+            childAspectRatio: 2.4,
+          ),
+          itemCount: lugares.length,
+          itemBuilder: (context, index) => PlaceCard(place: lugares[index]),
+        );
+      },
+    );
+  }
 }

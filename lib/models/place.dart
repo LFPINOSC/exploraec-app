@@ -78,14 +78,10 @@ final List<Place> lugaresEjemplo = [
 ///
 /// [forzarError] y [forzarVacio] existen solo para la práctica de hoy, para
 /// poder demostrar los 3 estados sin depender de una red real.
-// TODO(sesion-03): borra la línea de abajo y descomenta el bloque completo. (Paso 3 — carga simulada)
 Future<List<Place>> fetchLugaresSimulado({bool forzarError = false, bool forzarVacio = false}) async {
-  return lugaresEjemplo;
+  await Future.delayed(const Duration(seconds: 1));
+  if (forzarError) {
+    throw Exception('No se pudo conectar con el servidor (simulado)');
+  }
+  return forzarVacio ? <Place>[] : lugaresEjemplo;
 }
-// Future<List<Place>> fetchLugaresSimulado({bool forzarError = false, bool forzarVacio = false}) async {
-//   await Future.delayed(const Duration(seconds: 1));
-//   if (forzarError) {
-//     throw Exception('No se pudo conectar con el servidor (simulado)');
-//   }
-//   return forzarVacio ? <Place>[] : lugaresEjemplo;
-// }

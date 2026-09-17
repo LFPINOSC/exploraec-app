@@ -19,14 +19,12 @@ class PlaceCard extends StatelessWidget {
           context,
           MaterialPageRoute(builder: (context) => DetailScreen(place: place)),
         ),
-        // TODO(sesion-03): borra la línea de abajo y descomenta el bloque completo. (Paso 5 — accesibilidad)
-        child: _buildContenido(context),
-        // child: Semantics(
-        //   label: '${place.nombre}, categoría ${place.categoria}',
-        //   hint: 'Toca dos veces para ver el detalle',
-        //   button: true,
-        //   child: _buildContenido(context),
-        // ),
+        child: Semantics(
+          label: '${place.nombre}, categoría ${place.categoria}',
+          hint: 'Toca dos veces para ver el detalle',
+          button: true,
+          child: _buildContenido(context),
+        ),
       ),
     );
   }

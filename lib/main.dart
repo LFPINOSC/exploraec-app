@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'screens/home_screen.dart';
-import 'screens/map_placeholder_screen.dart';
+import 'screens/map_screen.dart';
 import 'screens/favorites_placeholder_screen.dart';
 import 'theme/app_theme.dart';
 
@@ -15,9 +15,7 @@ class ExploraEcApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'ExploraEC',
-      // TODO(sesion-03): borra la línea de abajo y descomenta el bloque completo. (Paso 1 — aplicar el tema)
-      theme: ThemeData(useMaterial3: true),
-      // theme: AppTheme.theme,
+      theme: AppTheme.theme,
       home: const RootShell(),
     );
   }
@@ -39,7 +37,7 @@ class _RootShellState extends State<RootShell> {
     return Scaffold(
       body: switch (_indiceActual) {
         0 => const HomeScreen(),
-        1 => const MapPlaceholderScreen(),
+        1 => const MapScreen(),
         _ => const FavoritesPlaceholderScreen(),
       },
       bottomNavigationBar: BottomNavigationBar(
