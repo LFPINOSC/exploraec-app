@@ -36,23 +36,21 @@ class HomeScreen extends GetView<PlacesController> {
           ),
         ],
       ),
-      // TODO(sesion-06): borra la línea de abajo y descomenta el bloque completo. (Paso 4 — reactividad con Obx)
-      body: const Center(child: Text('Pendiente de conectar con Obx')),
-      // body: Obx(() {
-      //   if (controller.estado.value == EstadoCarga.cargando) {
-      //     return const LoadingView(mensaje: 'Buscando lugares cercanos...');
-      //   }
-      //   if (controller.estado.value == EstadoCarga.error) {
-      //     return ErrorView(
-      //       mensaje: controller.mensajeError.value,
-      //       onReintentar: controller.cargarLugares,
-      //     );
-      //   }
-      //   if (controller.lugares.isEmpty) {
-      //     return const EmptyView(mensaje: 'Todavía no hay lugares guardados');
-      //   }
-      //   return _buildLista(controller.lugares);
-      // }),
+      body: Obx(() {
+        if (controller.estado.value == EstadoCarga.cargando) {
+          return const LoadingView(mensaje: 'Buscando lugares cercanos...');
+        }
+        if (controller.estado.value == EstadoCarga.error) {
+          return ErrorView(
+            mensaje: controller.mensajeError.value,
+            onReintentar: controller.cargarLugares,
+          );
+        }
+        if (controller.lugares.isEmpty) {
+          return const EmptyView(mensaje: 'Todavía no hay lugares guardados');
+        }
+        return _buildLista(controller.lugares);
+      }),
       floatingActionButton: FloatingActionButton(
         onPressed: () => Get.to(() => const AddPlaceScreen()),
         child: const Icon(Icons.add),
