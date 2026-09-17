@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/place.dart';
+import '../services/location_service.dart';
+import '../services/places_api_service.dart';
 import '../widgets/place_card.dart';
 import '../widgets/loading_view.dart';
 import '../widgets/empty_view.dart';
@@ -8,9 +10,12 @@ import '../theme/app_theme.dart';
 import 'add_place_screen.dart';
 
 /// Pantalla de Inicio: lista de lugares — Sesión 2 (datos de ejemplo).
-/// Desde la Sesión 3, la carga pasa por una función simulada con estados
-/// loading/vacío/error y un layout responsivo. Desde la Sesión 5, esta
-/// misma pantalla consume la Overpass API real, sin cambiar su estructura.
+/// Desde la Sesión 3, la carga pasa por estados loading/vacío/error y un
+/// layout responsivo. Desde la Sesión 5, esos mismos estados —construidos
+/// para una carga simulada— pasan a alimentarse de una `Future` real: la
+/// Overpass API. La interfaz (`FutureBuilder`, `LoadingView`/`EmptyView`/
+/// `ErrorView`) no cambia una sola línea; solo cambia de dónde viene la
+/// promesa.
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -31,12 +36,29 @@ class _HomeScreenState extends State<HomeScreen> {
 
   /// Dispara (o vuelve a disparar) la carga. [_modoDebugError]/[_modoDebugVacio]
   /// son solo un recurso de esta práctica, para demostrar los 3 estados sin
-  /// depender de una red real — no existen en la versión final de la app.
+  /// depender de que Overpass responda distinto cada vez — no existen en la
+  /// versión final de la app.
   void _cargar() {
     setState(() {
-      _futuroLugares = fetchLugaresSimulado(forzarError: _modoDebugError, forzarVacio: _modoDebugVacio);
+      // TODO(sesion-05): borra la línea de abajo y descomenta el bloque completo. (Paso 3 — datos reales)
+      _futuroLugares = Future.value(<Place>[]);
+      // _futuroLugares = _cargarLugaresReales();
     });
   }
+
+  /// Posición actual (Sesión 4) → Overpass API (Sesión 5) → se agregan los
+  /// lugares que el propio usuario creó a mano en `AddPlaceScreen` (siguen
+  /// solo en memoria hasta que la Sesión 7 los persista).
+  // TODO(sesion-05): borra la línea de abajo y descomenta el bloque completo. (Paso 3 — datos reales)
+  // Future<List<Place>> _cargarLugaresReales() async {
+  //   final posicion = await LocationService.obtenerPosicionActual();
+  //   final reales = await PlacesApiService.buscarLugaresCercanos(
+  //     posicion,
+  //     forzarError: _modoDebugError,
+  //     forzarVacio: _modoDebugVacio,
+  //   );
+  //   return [...reales, ...lugaresEjemplo];
+  // }
 
   @override
   Widget build(BuildContext context) {

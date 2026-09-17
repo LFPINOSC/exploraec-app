@@ -1,37 +1,21 @@
-# Placeholders de esta rama (sesion-04)
+# Placeholders de esta rama (sesion-05)
 
-Punto de partida: ExploraEC con tema, estados loading/vacío/error y layout responsivo ya resueltos (Sesión 3). El objetivo de esta sesión es reemplazar la pestaña "Mapa" (que hasta ahora solo mostraba un texto de aviso) por un mapa real con la posición del usuario y marcadores de los lugares de ejemplo.
+Punto de partida: ExploraEC con mapa real, permisos y posición del usuario ya resueltos (Sesión 4). El objetivo de esta sesión es reemplazar la carga de Inicio, que hasta ahora dependía de una lista fija en memoria, por lugares reales obtenidos de la Overpass API de OpenStreetMap (sin API key), usando la posición real del usuario.
 
 ## Archivos nuevos ya completos (sin `TODO`)
-- `lib/services/location_service.dart` — salvo el bloque de solicitud de permiso, ver tabla abajo.
-- `lib/screens/map_screen.dart` — salvo la capa de marcadores, ver tabla abajo.
-- `lib/screens/detail_screen.dart` — ya acepta `distanciaMetros` opcional (se usa desde el Paso 4).
-- `pubspec.yaml` — ya incluye `geolocator`, `permission_handler`, `flutter_map`, `latlong2`.
+- `lib/services/places_api_service.dart` — construcción de la consulta Overpass QL, llamada HTTP, manejo de errores (`SocketException`, timeout, `429`, JSON inválido) y mapeo de la respuesta a `Place`.
+- `lib/models/place.dart` — nuevo `Place.fromOverpassElement(...)`; ya no incluye `fetchLugaresSimulado` (reemplazada por el servicio real de esta sesión).
+- `pubspec.yaml` — ya incluye `http`.
 
 ## Qué descomentar
 
 | Archivo | Qué descomentar | Paso de la práctica |
 |---|---|---|
-| `lib/services/location_service.dart` | El bloque `Geolocator.checkPermission()`/`requestPermission()` dentro de `obtenerPosicionActual()` | Paso 3 |
-| `lib/screens/map_screen.dart` | El `MarkerLayer` completo (tu posición + un marcador por cada lugar de ejemplo, con navegación al Detalle mostrando la distancia) | Paso 4 |
+| `lib/screens/home_screen.dart` | En `_cargar()`: borrar `_futuroLugares = Future.value(<Place>[]);` y descomentar `_futuroLugares = _cargarLugaresReales();`. Descomentar también el método completo `_cargarLugaresReales()` (posición real → Overpass → se agregan los lugares creados a mano en `AddPlaceScreen`) | Paso 3 |
 
-## Edición manual fuera de este repo (no versionada aquí)
+## Nota sobre el Mapa
 
-Este repo no incluye el esqueleto completo de `flutter create` (ver `README.md`), así que los permisos nativos se agregan **directamente en tu propio proyecto** `exploraec`, no aquí:
-
-**Android** — agregar dentro de `android/app/src/main/AndroidManifest.xml`, como hijo directo de `<manifest>` (antes de `<application>`):
-```xml
-<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-```
-
-**iOS** — agregar dentro de `ios/Runner/Info.plist`, como un par `<key>`/`<string>` más dentro del `<dict>` principal:
-```xml
-<key>NSLocationWhenInUseUsageDescription</key>
-<string>ExploraEC necesita tu ubicación para mostrarte lugares cercanos.</string>
-```
-
-Ninguno de los dos cambios se ve reflejado con hot reload/hot restart — requieren detener `flutter run` por completo y volver a ejecutarlo, porque cambian configuración nativa que la app lee solo al iniciar el proceso.
+La pestaña Mapa **todavía** muestra los lugares de ejemplo de la Sesión 2 como marcadores (`lugaresEjemplo`), no los lugares reales que Inicio ya consume desde hoy — es intencional, no un error pendiente de esta sesión. Unificar ambas pantallas bajo una sola fuente de datos es exactamente el problema que la Sesión 6 resuelve con un `PlacesController` de GetX compartido.
 
 ## Comando de arranque
 
@@ -40,4 +24,4 @@ flutter pub get
 flutter run
 ```
 
-Con la rama recién clonada (antes de descomentar nada), la pestaña Mapa pide el permiso pero nunca lo solicita de verdad (`permiso` queda fijo en `denied`), así que siempre muestra el error de permiso denegado — es el comportamiento esperado hasta completar el Paso 3.
+Con la rama recién clonada (antes de descomentar nada), Inicio carga una lista vacía de inmediato (`EmptyView`) — es el comportamiento esperado hasta completar el Paso 3. La Overpass API es pública y no requiere registro ni API key; sí aplica un límite de uso razonable (fair-use) — evitar refrescar la pantalla repetidamente en poco tiempo durante la práctica.

@@ -28,12 +28,10 @@ class LocationService {
       );
     }
 
-    // TODO(sesion-04): borra la línea de abajo y descomenta el bloque completo. (Paso 3 — solicitar permiso)
-    var permiso = LocationPermission.denied;
-    // var permiso = await Geolocator.checkPermission();
-    // if (permiso == LocationPermission.denied) {
-    //   permiso = await Geolocator.requestPermission();
-    // }
+    var permiso = await Geolocator.checkPermission();
+    if (permiso == LocationPermission.denied) {
+      permiso = await Geolocator.requestPermission();
+    }
 
     if (permiso == LocationPermission.denied) {
       throw LocationException('Permiso de ubicación denegado. ExploraEC lo necesita para mostrarte lugares cercanos.');

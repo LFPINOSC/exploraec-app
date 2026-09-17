@@ -64,37 +64,39 @@ class _MapScreenState extends State<MapScreen> {
           urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
           userAgentPackageName: 'com.tmo.exploraec',
         ),
-        // TODO(sesion-04): borra la línea de abajo y descomenta el bloque completo. (Paso 4 — marcadores)
-        const MarkerLayer(markers: []),
-        // MarkerLayer(
-        //   markers: [
-        //     Marker(
-        //       point: miUbicacion,
-        //       width: 40,
-        //       height: 40,
-        //       child: const Icon(Icons.my_location, color: Colors.blue, size: 32),
-        //     ),
-        //     ...lugaresEjemplo.map(
-        //       (lugar) => Marker(
-        //         point: LatLng(lugar.lat, lugar.lng),
-        //         width: 40,
-        //         height: 40,
-        //         child: GestureDetector(
-        //           onTap: () => Navigator.push(
-        //             context,
-        //             MaterialPageRoute(
-        //               builder: (context) => DetailScreen(
-        //                 place: lugar,
-        //                 distanciaMetros: distanciaAPlaceEnMetros(posicion, lugar),
-        //               ),
-        //             ),
-        //           ),
-        //           child: Icon(Icons.place, color: AppTheme.colorPrimario, size: 36),
-        //         ),
-        //       ),
-        //     ),
-        //   ],
-        // ),
+        // Nota: el Mapa todavía marca los lugares de ejemplo (`lugaresEjemplo`),
+        // no los reales de la Overpass API que Inicio ya consume desde la
+        // Sesión 5 — unificar ambas pantallas bajo un mismo controlador es
+        // exactamente el problema que resuelve GetX en la Sesión 6.
+        MarkerLayer(
+          markers: [
+            Marker(
+              point: miUbicacion,
+              width: 40,
+              height: 40,
+              child: const Icon(Icons.my_location, color: Colors.blue, size: 32),
+            ),
+            ...lugaresEjemplo.map(
+              (lugar) => Marker(
+                point: LatLng(lugar.lat, lugar.lng),
+                width: 40,
+                height: 40,
+                child: GestureDetector(
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => DetailScreen(
+                        place: lugar,
+                        distanciaMetros: distanciaAPlaceEnMetros(posicion, lugar),
+                      ),
+                    ),
+                  ),
+                  child: Icon(Icons.place, color: AppTheme.colorPrimario, size: 36),
+                ),
+              ),
+            ),
+          ],
+        ),
       ],
     );
   }
