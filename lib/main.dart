@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'screens/home_screen.dart';
 import 'screens/map_placeholder_screen.dart';
 import 'screens/favorites_placeholder_screen.dart';
+import 'theme/app_theme.dart';
 
 void main() {
   runApp(const ExploraEcApp());
@@ -14,6 +15,9 @@ class ExploraEcApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'ExploraEC',
+      // TODO(sesion-03): borra la línea de abajo y descomenta el bloque completo. (Paso 1 — aplicar el tema)
+      theme: ThemeData(useMaterial3: true),
+      // theme: AppTheme.theme,
       home: const RootShell(),
     );
   }
@@ -33,25 +37,20 @@ class _RootShellState extends State<RootShell> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // TODO(sesion-02): borra la línea de abajo y descomenta el bloque completo. (cuerpo según pestaña)
-      body: const HomeScreen(),
-      // body: switch (_indiceActual) {
-      //   0 => const HomeScreen(),
-      //   1 => const MapPlaceholderScreen(),
-      //   _ => const FavoritesPlaceholderScreen(),
-      // },
-
-      // TODO(sesion-02): borra la línea de abajo y descomenta el bloque completo. (barra inferior)
-      bottomNavigationBar: null,
-      // bottomNavigationBar: BottomNavigationBar(
-      //   currentIndex: _indiceActual,
-      //   onTap: (i) => setState(() => _indiceActual = i),
-      //   items: const [
-      //     BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Inicio'),
-      //     BottomNavigationBarItem(icon: Icon(Icons.map), label: 'Mapa'),
-      //     BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'Favoritos'),
-      //   ],
-      // ),
+      body: switch (_indiceActual) {
+        0 => const HomeScreen(),
+        1 => const MapPlaceholderScreen(),
+        _ => const FavoritesPlaceholderScreen(),
+      },
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _indiceActual,
+        onTap: (i) => setState(() => _indiceActual = i),
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Inicio'),
+          BottomNavigationBarItem(icon: Icon(Icons.map), label: 'Mapa'),
+          BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'Favoritos'),
+        ],
+      ),
     );
   }
 }

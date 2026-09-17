@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import '../models/place.dart';
 import '../screens/detail_screen.dart';
+import '../theme/app_theme.dart';
 
 /// Tarjeta reutilizable que representa un [Place] en cualquier lista de
 /// la app (Inicio, resultados de categoría, etc.) — Sesión 2.
+/// Accesibilidad y colores de marca aplicados en la Sesión 3.
 class PlaceCard extends StatelessWidget {
   final Place place;
   const PlaceCard({super.key, required this.place});
@@ -11,50 +13,55 @@ class PlaceCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      margin: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.sm),
       child: InkWell(
-        // TODO(sesion-02): borra la línea de abajo y descomenta el bloque completo. (Paso 4 — navegación al Detalle)
-        onTap: null,
-        // onTap: () => Navigator.push(
-        //   context,
-        //   MaterialPageRoute(builder: (context) => DetailScreen(place: place)),
-        // ),
-
-        // TODO(sesion-02): borra la línea de abajo y descomenta el bloque completo. (Paso 3 — cuerpo de la tarjeta)
-        child: const Padding(
-          padding: EdgeInsets.all(12),
-          child: Text('Cargando tarjeta...'),
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => DetailScreen(place: place)),
         ),
-        // child: Padding(
-        //   padding: const EdgeInsets.all(12),
-        //   child: Row(
-        //     crossAxisAlignment: CrossAxisAlignment.start,
-        //     children: [
-        //       const Icon(Icons.place, size: 32),
-        //       const SizedBox(width: 12),
-        //       Expanded(
-        //         child: Column(
-        //           crossAxisAlignment: CrossAxisAlignment.start,
-        //           children: [
-        //             Text(
-        //               place.nombre,
-        //               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-        //               overflow: TextOverflow.ellipsis,
-        //             ),
-        //             const SizedBox(height: 4),
-        //             Text(place.categoria, style: const TextStyle(color: Colors.grey)),
-        //             const SizedBox(height: 4),
-        //             Text(
-        //               place.descripcion,
-        //               maxLines: 2,
-        //               overflow: TextOverflow.ellipsis,
-        //             ),
-        //           ],
-        //         ),
-        //       ),
-        //     ],
-        //   ),
+        // TODO(sesion-03): borra la línea de abajo y descomenta el bloque completo. (Paso 5 — accesibilidad)
+        child: _buildContenido(context),
+        // child: Semantics(
+        //   label: '${place.nombre}, categoría ${place.categoria}',
+        //   hint: 'Toca dos veces para ver el detalle',
+        //   button: true,
+        //   child: _buildContenido(context),
         // ),
+      ),
+    );
+  }
+
+  Widget _buildContenido(BuildContext context) {
+    final estilos = Theme.of(context).textTheme;
+    return Padding(
+      padding: const EdgeInsets.all(AppSpacing.md),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(Icons.place, size: 32, color: AppTheme.colorPrimario),
+          const SizedBox(width: AppSpacing.md),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  place.nombre,
+                  style: estilos.titleMedium,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: AppSpacing.xs),
+                Text(place.categoria, style: estilos.bodySmall?.copyWith(color: Colors.grey.shade600)),
+                const SizedBox(height: AppSpacing.xs),
+                Text(
+                  place.descripcion,
+                  style: estilos.bodyMedium,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

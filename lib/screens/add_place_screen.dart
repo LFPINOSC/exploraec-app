@@ -34,53 +34,42 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
           key: _formKey,
           child: Column(
             children: [
-              // TODO(sesion-02): borra el bloque de abajo y descomenta el bloque completo.
-              TextField(controller: _nombreController, decoration: const InputDecoration(labelText: 'Nombre')),
-              // TextFormField(
-              //   controller: _nombreController,
-              //   decoration: const InputDecoration(labelText: 'Nombre del lugar', hintText: 'Ej. Parque El Ejido'),
-              //   validator: (valor) => (valor == null || valor.trim().isEmpty) ? 'El nombre es obligatorio' : null,
-              // ),
+              TextFormField(
+                controller: _nombreController,
+                decoration: const InputDecoration(labelText: 'Nombre del lugar', hintText: 'Ej. Parque El Ejido'),
+                validator: (valor) => (valor == null || valor.trim().isEmpty) ? 'El nombre es obligatorio' : null,
+              ),
               const SizedBox(height: 12),
-
-              // TODO(sesion-02): borra el bloque de abajo y descomenta el bloque completo.
-              TextField(controller: _categoriaController, decoration: const InputDecoration(labelText: 'Categoría')),
-              // TextFormField(
-              //   controller: _categoriaController,
-              //   decoration: const InputDecoration(labelText: 'Categoría', hintText: 'Ej. Cafeterías'),
-              //   validator: (valor) => (valor == null || valor.trim().isEmpty) ? 'La categoría es obligatoria' : null,
-              // ),
+              TextFormField(
+                controller: _categoriaController,
+                decoration: const InputDecoration(labelText: 'Categoría', hintText: 'Ej. Cafeterías'),
+                validator: (valor) => (valor == null || valor.trim().isEmpty) ? 'La categoría es obligatoria' : null,
+              ),
               const SizedBox(height: 12),
-
-              // TODO(sesion-02): borra el bloque de abajo y descomenta el bloque completo.
-              TextField(controller: _descripcionController, decoration: const InputDecoration(labelText: 'Descripción')),
-              // TextFormField(
-              //   controller: _descripcionController,
-              //   decoration: const InputDecoration(labelText: 'Descripción'),
-              //   maxLines: 3,
-              //   validator: (valor) =>
-              //       (valor == null || valor.trim().length < 10) ? 'Escribe al menos 10 caracteres' : null,
-              // ),
+              TextFormField(
+                controller: _descripcionController,
+                decoration: const InputDecoration(labelText: 'Descripción'),
+                maxLines: 3,
+                validator: (valor) =>
+                    (valor == null || valor.trim().length < 10) ? 'Escribe al menos 10 caracteres' : null,
+              ),
               const SizedBox(height: 24),
-
-              // TODO(sesion-02): borra la línea de abajo y descomenta el bloque completo.
-              ElevatedButton(onPressed: null, child: const Text('Guardar')),
-              // ElevatedButton(
-              //   onPressed: () {
-              //     if (_formKey.currentState!.validate()) {
-              //       lugaresEjemplo.add(Place(
-              //         id: DateTime.now().millisecondsSinceEpoch.toString(),
-              //         nombre: _nombreController.text.trim(),
-              //         categoria: _categoriaController.text.trim(),
-              //         descripcion: _descripcionController.text.trim(),
-              //         lat: -0.1807,
-              //         lng: -78.4859,
-              //       ));
-              //       Navigator.pop(context);
-              //     }
-              //   },
-              //   child: const Text('Guardar'),
-              // ),
+              ElevatedButton(
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    lugaresEjemplo.add(Place(
+                      id: DateTime.now().millisecondsSinceEpoch.toString(),
+                      nombre: _nombreController.text.trim(),
+                      categoria: _categoriaController.text.trim(),
+                      descripcion: _descripcionController.text.trim(),
+                      lat: -0.1807,
+                      lng: -78.4859,
+                    ));
+                    Navigator.pop(context);
+                  }
+                },
+                child: const Text('Guardar'),
+              ),
             ],
           ),
         ),
