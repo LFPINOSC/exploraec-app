@@ -1,26 +1,41 @@
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 
 import '../models/place.dart';
+import '../repositories/place_repository.dart';
 import '../services/location_service.dart';
 import '../services/places_api_service.dart';
 
 enum EstadoCarga { cargando, exito, error }
 
-/// Fuente única de verdad de los lugares y la posición del usuario —
-/// Sesión 6. Antes de esta sesión, `HomeScreen` y `MapScreen` pedían cada
-/// una su propia copia por separado (cada una llamaba a `LocationService`,
-/// y solo Inicio llamaba a la Overpass API): el Mapa seguía mostrando
-/// `lugaresEjemplo` mientras Inicio ya mostraba datos reales, y la
-/// posición se pedía al sistema operativo dos veces. Ahora ambas pantallas
-/// leen del mismo `PlacesController`, registrado una sola vez por
-/// `PlacesBinding` y obtenido con `Get.find()` (vía `GetView`, ver
-/// `HomeScreen`/`MapScreen`).
+/// Fuente única de verdad de los lugares, la posición y los favoritos del
+/// usuario — Sesión 6 (lugares/posición) y Sesión 7 (favoritos + caché).
+/// Antes de la Sesión 6, `HomeScreen` y `MapScreen` pedían cada una su
+/// propia copia por separado. Ahora ambas pantallas leen del mismo
+/// `PlacesController`, registrado una sola vez por `PlacesBinding` y
+/// obtenido con `Get.find()` (vía `GetView`, ver `HomeScreen`/`MapScreen`).
 class PlacesController extends GetxController {
+  final PlaceRepository _repository;
+  PlacesController(this._repository);
+
   final RxList<Place> lugares = <Place>[].obs;
   final Rx<EstadoCarga> estado = EstadoCarga.cargando.obs;
   final RxString mensajeError = ''.obs;
   final Rx<Position?> posicion = Rx<Position?>(null);
+
+  /// `true` solo cuando la última carga exitosa vino de la caché local de
+  /// la Sesión 7 (la llamada remota falló) — la UI lo usa para mostrar un
+  /// aviso de "datos guardados", nunca para ocultar que pueden estar
+  /// desactualizados.
+  final RxBool desdeCache = false.obs;
+
+  /// Favoritos persistentes — Sesión 7. `_favoritosBox` es el almacenamiento
+  /// (sobrevive reiniciar la app); `favoritos` es el espejo reactivo que la
+  /// UI observa con `Obx` — el mismo patrón de "Hive guarda, Rx notifica"
+  /// que usa `PlaceRepository` para la caché de lugares.
+  final RxList<Place> favoritos = <Place>[].obs;
+  late final Box<Map> _favoritosBox;
 
   bool _modoDebugError = false;
   bool _modoDebugVacio = false;
@@ -28,6 +43,10 @@ class PlacesController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    _favoritosBox = Hive.box<Map>('favoritos');
+    favoritos.value = _favoritosBox.values
+        .map((mapa) => Place.fromMap(Map<String, dynamic>.from(mapa)))
+        .toList();
     cargarLugares();
   }
 
@@ -42,34 +61,55 @@ class PlacesController extends GetxController {
 
   Future<void> cargarLugares() async {
     estado.value = EstadoCarga.cargando;
+    try {
+      final pos = await LocationService.obtenerPosicionActual();
+      posicion.value = pos;
 
-    // TODO(sesion-06): borra la línea de abajo y descomenta el bloque completo. (Paso 3 — conectar el controller a los servicios reales)
-    lugares.value = [];
-    estado.value = EstadoCarga.exito;
-    // try {
-    //   final pos = await LocationService.obtenerPosicionActual();
-    //   posicion.value = pos;
-    //   final reales = await PlacesApiService.buscarLugaresCercanos(
-    //     pos,
-    //     forzarError: _modoDebugError,
-    //     forzarVacio: _modoDebugVacio,
-    //   );
-    //   lugares.value = [...reales, ...lugaresEjemplo];
-    //   estado.value = EstadoCarga.exito;
-    // } catch (e) {
-    //   mensajeError.value = '$e';
-    //   estado.value = EstadoCarga.error;
-    // }
+      // TODO(sesion-07): borra el bloque de abajo y descomenta el bloque completo. (Paso 4 — repositorio con caché)
+      final reales = await PlacesApiService.buscarLugaresCercanos(
+        pos,
+        forzarError: _modoDebugError,
+        forzarVacio: _modoDebugVacio,
+      );
+      lugares.value = [...reales, ...lugaresEjemplo];
+      desdeCache.value = false;
+      estado.value = EstadoCarga.exito;
+      // final (resultado, cache) = await _repository.obtenerLugaresCercanos(
+      //   pos,
+      //   forzarError: _modoDebugError,
+      //   forzarVacio: _modoDebugVacio,
+      // );
+      // lugares.value = [...resultado, ...lugaresEjemplo];
+      // desdeCache.value = cache;
+      // estado.value = EstadoCarga.exito;
+    } catch (e) {
+      mensajeError.value = '$e';
+      estado.value = EstadoCarga.error;
+    }
   }
 
   /// Agrega un lugar creado a mano (`AddPlaceScreen`) — en memoria
-  /// únicamente hasta que la Sesión 7 lo persista con Hive. `lugares.add`
-  /// (en vez de reconstruir toda la lista) ya notifica a cualquier `Obx`
-  /// que esté escuchando, en Inicio y en el Mapa a la vez.
+  /// únicamente; no se guarda en la caché de la Sesión 7 a propósito, para
+  /// mantener separadas dos cosas distintas: la caché es una copia de lo
+  /// que devuelve la Overpass API, no un lugar inventado por el usuario.
   void agregarLugar(Place lugar) {
     lugaresEjemplo.add(lugar);
     lugares.add(lugar);
   }
+
+  bool esFavorito(Place lugar) => favoritos.any((p) => p.id == lugar.id);
+
+  // TODO(sesion-07): borra la línea de abajo y descomenta el bloque completo. (Paso 5 — favoritos persistentes)
+  void alternarFavorito(Place lugar) {}
+  // void alternarFavorito(Place lugar) {
+  //   if (esFavorito(lugar)) {
+  //     _favoritosBox.delete(lugar.id);
+  //     favoritos.removeWhere((p) => p.id == lugar.id);
+  //   } else {
+  //     _favoritosBox.put(lugar.id, lugar.toMap());
+  //     favoritos.add(lugar);
+  //   }
+  // }
 
   double? distanciaA(Place lugar) {
     final pos = posicion.value;

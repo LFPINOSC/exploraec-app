@@ -1,24 +1,24 @@
-# Placeholders de esta rama (sesion-06)
+# Placeholders de esta rama (sesion-07)
 
-Punto de partida: ExploraEC con Overpass API resuelta en Inicio (Sesión 5), pero el Mapa todavía mostrando `lugaresEjemplo` por separado — dos fuentes de datos desincronizadas. El objetivo de esta sesión es centralizar todo en un `PlacesController` de GetX que ambas pantallas comparten, y refactorizar la navegación a `Get.to`.
+Punto de partida: ExploraEC con `PlacesController` (GetX) ya compartido entre Inicio y Mapa (Sesión 6), sin ninguna persistencia — cerrar la app pierde todo, y sin conexión no hay nada que mostrar salvo el error. El objetivo de esta sesión es agregar una caché local con Hive (`PlaceRepository`) y favoritos que sobreviven reiniciar la app.
 
 ## Archivos nuevos ya completos (sin `TODO`)
-- `lib/controllers/places_controller.dart` — estado compartido (`RxList<Place> lugares`, `Rx<EstadoCarga> estado`, `Rx<Position?> posicion`), salvo el cuerpo de `cargarLugares()` (ver tabla de abajo).
-- `lib/bindings/places_binding.dart` — registra `PlacesController` con `Get.put` al arrancar la app.
-- `lib/main.dart` — ya usa `GetMaterialApp` con `initialBinding: PlacesBinding()`.
-- `lib/widgets/place_card.dart` — ya navega con `Get.to(() => DetailScreen(place: place))` en vez de `Navigator.push`.
-- `lib/screens/add_place_screen.dart` — ya guarda el lugar nuevo vía `Get.find<PlacesController>().agregarLugar(...)` y cierra con `Get.back()`.
-- `pubspec.yaml` — ya incluye `get`.
+- `lib/repositories/place_repository.dart` — completo, no tiene marcadores. Se usa recién al completar el Paso 4 en `places_controller.dart` (ver tabla de abajo) — hasta entonces, el analizador puede marcar el campo `_repository` del controller como "no usado", es esperado.
+- `lib/screens/favorites_screen.dart` — completo, reemplaza a `favorites_placeholder_screen.dart` (se eliminó de esta rama).
+- `lib/main.dart` — ya inicializa Hive (`Hive.initFlutter()`, abre las cajas `lugares_cache` y `favoritos`) antes de `runApp`, y usa `FavoritesScreen` en vez del placeholder.
+- `lib/bindings/places_binding.dart` — ya arma el `PlaceRepository` con la caja `lugares_cache` y se lo pasa al `PlacesController`.
+- `lib/models/place.dart` — ya tiene `toMap()`/`fromMap()` para la (de)serialización manual con Hive.
+- `lib/widgets/place_card.dart` — ya muestra el ícono de favorito (`Obx` + `controller.esFavorito(place)`/`controller.alternarFavorito(place)`); no hace nada visible hasta completar el Paso 5.
+- `pubspec.yaml` — ya incluye `hive`, `hive_flutter`, `path_provider`.
 
 ## Qué descomentar
 
 | Archivo | Qué descomentar | Paso de la práctica |
 |---|---|---|
-| `lib/controllers/places_controller.dart` | En `cargarLugares()`: borrar `lugares.value = []; estado.value = EstadoCarga.exito;` y descomentar el bloque `try { ... } catch (e) { ... }` completo (posición real → Overpass → estados) | Paso 3 |
-| `lib/screens/home_screen.dart` | Borrar `body: const Center(child: Text('Pendiente de conectar con Obx'))` y descomentar el `body: Obx(() { ... })` completo | Paso 4 |
-| `lib/screens/map_screen.dart` | Borrar `body: const Center(child: Text('Pendiente de conectar con Obx'))` y descomentar el `body: Obx(() { ... })` completo | Paso 4 |
+| `lib/controllers/places_controller.dart` | En `cargarLugares()`: borrar el bloque que llama a `PlacesApiService.buscarLugaresCercanos(...)` directamente y descomentar el bloque que llama a `_repository.obtenerLugaresCercanos(...)` (con caché) | Paso 4 |
+| `lib/controllers/places_controller.dart` | Borrar `void alternarFavorito(Place lugar) {}` y descomentar el cuerpo real de `alternarFavorito` (agrega/quita de `_favoritosBox` y de la lista reactiva `favoritos`) | Paso 5 |
 
-Con la rama recién clonada (antes de descomentar nada), tanto Inicio como el Mapa muestran el texto "Pendiente de conectar con Obx" — es el comportamiento esperado hasta completar los Pasos 3 y 4. El orden importa: el controller (Paso 3) debe quedar resuelto antes de que las pantallas (Paso 4) tengan algo real que mostrar.
+Con la rama recién clonada (antes de descomentar nada), la app funciona igual que al final de la Sesión 6 (sin caché, sin favoritos funcionales — el corazón de `PlaceCard` se ve pero no persiste nada todavía). El orden importa: primero el Paso 4 (repositorio), después el Paso 5 (favoritos) — ambos son independientes entre sí, pero seguir ese orden es el que sigue el instructivo.
 
 ## Comando de arranque
 
