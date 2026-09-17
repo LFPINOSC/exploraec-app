@@ -1,58 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
 
+import '../controllers/places_controller.dart';
 import '../models/place.dart';
-import '../services/location_service.dart';
 import '../theme/app_theme.dart';
 import '../widgets/error_view.dart';
 import '../widgets/loading_view.dart';
 import 'detail_screen.dart';
 
-/// Pantalla de Mapa real — Sesión 4. Reemplaza a `MapPlaceholderScreen`
-/// (Sesión 2). Teselas de OpenStreetMap, sin API key: ver la política de
-/// uso de tiles de OSM citada en la teoría de esta sesión.
-class MapScreen extends StatefulWidget {
+/// Pantalla de Mapa real — Sesión 4. Desde la Sesión 6 comparte el mismo
+/// `PlacesController` que `HomeScreen`: la posición y los lugares se piden
+/// una sola vez (en el controller), no dos veces por separado como hasta
+/// la Sesión 5 — ver la nota de `PlacesController` para el detalle del
+/// problema que esto resuelve.
+class MapScreen extends GetView<PlacesController> {
   const MapScreen({super.key});
-
-  @override
-  State<MapScreen> createState() => _MapScreenState();
-}
-
-class _MapScreenState extends State<MapScreen> {
-  late Future<Position> _futuroPosicion;
-
-  @override
-  void initState() {
-    super.initState();
-    _futuroPosicion = LocationService.obtenerPosicionActual();
-  }
-
-  void _reintentar() {
-    setState(() => _futuroPosicion = LocationService.obtenerPosicionActual());
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Mapa')),
-      body: FutureBuilder<Position>(
-        future: _futuroPosicion,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const LoadingView(mensaje: 'Obteniendo tu ubicación...');
-          }
-          if (snapshot.hasError) {
-            return ErrorView(mensaje: '${snapshot.error}', onReintentar: _reintentar);
-          }
-          return _buildMapa(context, snapshot.data!);
-        },
-      ),
+      // TODO(sesion-06): borra la línea de abajo y descomenta el bloque completo. (Paso 4 — reactividad con Obx)
+      body: const Center(child: Text('Pendiente de conectar con Obx')),
+      // body: Obx(() {
+      //   if (controller.estado.value == EstadoCarga.cargando || controller.posicion.value == null) {
+      //     return const LoadingView(mensaje: 'Obteniendo tu ubicación...');
+      //   }
+      //   if (controller.estado.value == EstadoCarga.error) {
+      //     return ErrorView(
+      //       mensaje: controller.mensajeError.value,
+      //       onReintentar: controller.cargarLugares,
+      //     );
+      //   }
+      //   return _buildMapa(context, controller.posicion.value!, controller.lugares);
+      // }),
     );
   }
 
-  Widget _buildMapa(BuildContext context, Position posicion) {
+  Widget _buildMapa(BuildContext context, Position posicion, List<Place> lugares) {
     final miUbicacion = LatLng(posicion.latitude, posicion.longitude);
     return FlutterMap(
       options: MapOptions(initialCenter: miUbicacion, initialZoom: 15),
@@ -64,10 +52,6 @@ class _MapScreenState extends State<MapScreen> {
           urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
           userAgentPackageName: 'com.tmo.exploraec',
         ),
-        // Nota: el Mapa todavía marca los lugares de ejemplo (`lugaresEjemplo`),
-        // no los reales de la Overpass API que Inicio ya consume desde la
-        // Sesión 5 — unificar ambas pantallas bajo un mismo controlador es
-        // exactamente el problema que resuelve GetX en la Sesión 6.
         MarkerLayer(
           markers: [
             Marker(
@@ -76,21 +60,16 @@ class _MapScreenState extends State<MapScreen> {
               height: 40,
               child: const Icon(Icons.my_location, color: Colors.blue, size: 32),
             ),
-            ...lugaresEjemplo.map(
+            ...lugares.map(
               (lugar) => Marker(
                 point: LatLng(lugar.lat, lugar.lng),
                 width: 40,
                 height: 40,
                 child: GestureDetector(
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => DetailScreen(
+                  onTap: () => Get.to(() => DetailScreen(
                         place: lugar,
-                        distanciaMetros: distanciaAPlaceEnMetros(posicion, lugar),
-                      ),
-                    ),
-                  ),
+                        distanciaMetros: controller.distanciaA(lugar),
+                      )),
                   child: Icon(Icons.place, color: AppTheme.colorPrimario, size: 36),
                 ),
               ),

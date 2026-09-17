@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import 'bindings/places_binding.dart';
 import 'screens/home_screen.dart';
 import 'screens/map_screen.dart';
 import 'screens/favorites_placeholder_screen.dart';
@@ -8,14 +11,20 @@ void main() {
   runApp(const ExploraEcApp());
 }
 
+/// `MaterialApp` → `GetMaterialApp` — Sesión 6. Sigue siendo Material por
+/// debajo (mismo `theme`, mismos widgets); `GetMaterialApp` agrega encima
+/// la navegación de GetX (`Get.to`, usada desde esta sesión en `PlaceCard`
+/// y `MapScreen`) y `initialBinding`, que registra `PlacesController` una
+/// sola vez, antes de que cualquier pantalla lo necesite.
 class ExploraEcApp extends StatelessWidget {
   const ExploraEcApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'ExploraEC',
       theme: AppTheme.theme,
+      initialBinding: PlacesBinding(),
       home: const RootShell(),
     );
   }

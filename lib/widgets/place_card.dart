@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
 import '../models/place.dart';
 import '../screens/detail_screen.dart';
 import '../theme/app_theme.dart';
 
 /// Tarjeta reutilizable que representa un [Place] en cualquier lista de
 /// la app (Inicio, resultados de categoría, etc.) — Sesión 2.
-/// Accesibilidad y colores de marca aplicados en la Sesión 3.
+/// Accesibilidad y colores de marca aplicados en la Sesión 3. Navegación
+/// con GetX (`Get.to`) desde la Sesión 6, en vez de `Navigator.push` +
+/// `MaterialPageRoute` — Flutter sigue usando `Navigator` por debajo,
+/// `Get.to` solo evita repetir `MaterialPageRoute(builder: ...)` en cada
+/// lugar que navega, y no pide `context` para hacerlo.
 class PlaceCard extends StatelessWidget {
   final Place place;
   const PlaceCard({super.key, required this.place});
@@ -15,10 +21,7 @@ class PlaceCard extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.sm),
       child: InkWell(
-        onTap: () => Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => DetailScreen(place: place)),
-        ),
+        onTap: () => Get.to(() => DetailScreen(place: place)),
         child: Semantics(
           label: '${place.nombre}, categoría ${place.categoria}',
           hint: 'Toca dos veces para ver el detalle',

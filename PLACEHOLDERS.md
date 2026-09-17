@@ -1,21 +1,24 @@
-# Placeholders de esta rama (sesion-05)
+# Placeholders de esta rama (sesion-06)
 
-Punto de partida: ExploraEC con mapa real, permisos y posición del usuario ya resueltos (Sesión 4). El objetivo de esta sesión es reemplazar la carga de Inicio, que hasta ahora dependía de una lista fija en memoria, por lugares reales obtenidos de la Overpass API de OpenStreetMap (sin API key), usando la posición real del usuario.
+Punto de partida: ExploraEC con Overpass API resuelta en Inicio (Sesión 5), pero el Mapa todavía mostrando `lugaresEjemplo` por separado — dos fuentes de datos desincronizadas. El objetivo de esta sesión es centralizar todo en un `PlacesController` de GetX que ambas pantallas comparten, y refactorizar la navegación a `Get.to`.
 
 ## Archivos nuevos ya completos (sin `TODO`)
-- `lib/services/places_api_service.dart` — construcción de la consulta Overpass QL, llamada HTTP, manejo de errores (`SocketException`, timeout, `429`, JSON inválido) y mapeo de la respuesta a `Place`.
-- `lib/models/place.dart` — nuevo `Place.fromOverpassElement(...)`; ya no incluye `fetchLugaresSimulado` (reemplazada por el servicio real de esta sesión).
-- `pubspec.yaml` — ya incluye `http`.
+- `lib/controllers/places_controller.dart` — estado compartido (`RxList<Place> lugares`, `Rx<EstadoCarga> estado`, `Rx<Position?> posicion`), salvo el cuerpo de `cargarLugares()` (ver tabla de abajo).
+- `lib/bindings/places_binding.dart` — registra `PlacesController` con `Get.put` al arrancar la app.
+- `lib/main.dart` — ya usa `GetMaterialApp` con `initialBinding: PlacesBinding()`.
+- `lib/widgets/place_card.dart` — ya navega con `Get.to(() => DetailScreen(place: place))` en vez de `Navigator.push`.
+- `lib/screens/add_place_screen.dart` — ya guarda el lugar nuevo vía `Get.find<PlacesController>().agregarLugar(...)` y cierra con `Get.back()`.
+- `pubspec.yaml` — ya incluye `get`.
 
 ## Qué descomentar
 
 | Archivo | Qué descomentar | Paso de la práctica |
 |---|---|---|
-| `lib/screens/home_screen.dart` | En `_cargar()`: borrar `_futuroLugares = Future.value(<Place>[]);` y descomentar `_futuroLugares = _cargarLugaresReales();`. Descomentar también el método completo `_cargarLugaresReales()` (posición real → Overpass → se agregan los lugares creados a mano en `AddPlaceScreen`) | Paso 3 |
+| `lib/controllers/places_controller.dart` | En `cargarLugares()`: borrar `lugares.value = []; estado.value = EstadoCarga.exito;` y descomentar el bloque `try { ... } catch (e) { ... }` completo (posición real → Overpass → estados) | Paso 3 |
+| `lib/screens/home_screen.dart` | Borrar `body: const Center(child: Text('Pendiente de conectar con Obx'))` y descomentar el `body: Obx(() { ... })` completo | Paso 4 |
+| `lib/screens/map_screen.dart` | Borrar `body: const Center(child: Text('Pendiente de conectar con Obx'))` y descomentar el `body: Obx(() { ... })` completo | Paso 4 |
 
-## Nota sobre el Mapa
-
-La pestaña Mapa **todavía** muestra los lugares de ejemplo de la Sesión 2 como marcadores (`lugaresEjemplo`), no los lugares reales que Inicio ya consume desde hoy — es intencional, no un error pendiente de esta sesión. Unificar ambas pantallas bajo una sola fuente de datos es exactamente el problema que la Sesión 6 resuelve con un `PlacesController` de GetX compartido.
+Con la rama recién clonada (antes de descomentar nada), tanto Inicio como el Mapa muestran el texto "Pendiente de conectar con Obx" — es el comportamiento esperado hasta completar los Pasos 3 y 4. El orden importa: el controller (Paso 3) debe quedar resuelto antes de que las pantallas (Paso 4) tengan algo real que mostrar.
 
 ## Comando de arranque
 
@@ -23,5 +26,3 @@ La pestaña Mapa **todavía** muestra los lugares de ejemplo de la Sesión 2 com
 flutter pub get
 flutter run
 ```
-
-Con la rama recién clonada (antes de descomentar nada), Inicio carga una lista vacía de inmediato (`EmptyView`) — es el comportamiento esperado hasta completar el Paso 3. La Overpass API es pública y no requiere registro ni API key; sí aplica un límite de uso razonable (fair-use) — evitar refrescar la pantalla repetidamente en poco tiempo durante la práctica.
