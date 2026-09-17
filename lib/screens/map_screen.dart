@@ -23,20 +23,18 @@ class MapScreen extends GetView<PlacesController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Mapa')),
-      // TODO(sesion-06): borra la línea de abajo y descomenta el bloque completo. (Paso 4 — reactividad con Obx)
-      body: const Center(child: Text('Pendiente de conectar con Obx')),
-      // body: Obx(() {
-      //   if (controller.estado.value == EstadoCarga.cargando || controller.posicion.value == null) {
-      //     return const LoadingView(mensaje: 'Obteniendo tu ubicación...');
-      //   }
-      //   if (controller.estado.value == EstadoCarga.error) {
-      //     return ErrorView(
-      //       mensaje: controller.mensajeError.value,
-      //       onReintentar: controller.cargarLugares,
-      //     );
-      //   }
-      //   return _buildMapa(context, controller.posicion.value!, controller.lugares);
-      // }),
+      body: Obx(() {
+        if (controller.estado.value == EstadoCarga.cargando || controller.posicion.value == null) {
+          return const LoadingView(mensaje: 'Obteniendo tu ubicación...');
+        }
+        if (controller.estado.value == EstadoCarga.error) {
+          return ErrorView(
+            mensaje: controller.mensajeError.value,
+            onReintentar: controller.cargarLugares,
+          );
+        }
+        return _buildMapa(context, controller.posicion.value!, controller.lugares);
+      }),
     );
   }
 

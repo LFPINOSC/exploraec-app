@@ -34,24 +34,18 @@ class _AssistantScreenState extends State<AssistantScreen> {
       _resultado = null;
     });
 
-    // TODO(sesion-09): borra el bloque de abajo (stub) y descomenta el bloque real. (Paso 4 — conectar el backend)
-    await Future.delayed(const Duration(milliseconds: 300));
-    setState(() {
-      _cargando = false;
-      _error = 'Conecta AiAssistantService (Paso 4) para obtener una recomendación real.';
-    });
-    // try {
-    //   final recomendacion = await AiAssistantService.pedirRecomendacion(
-    //     consulta: _consultaCtrl.text.trim(),
-    //     lugares: _places.lugares,
-    //     posicion: _places.posicion.value,
-    //   );
-    //   setState(() => _resultado = recomendacion);
-    // } on AiAssistantException catch (e) {
-    //   setState(() => _error = e.mensaje);
-    // } finally {
-    //   setState(() => _cargando = false);
-    // }
+    try {
+      final recomendacion = await AiAssistantService.pedirRecomendacion(
+        consulta: _consultaCtrl.text.trim(),
+        lugares: _places.lugares,
+        posicion: _places.posicion.value,
+      );
+      setState(() => _resultado = recomendacion);
+    } on AiAssistantException catch (e) {
+      setState(() => _error = e.mensaje);
+    } finally {
+      setState(() => _cargando = false);
+    }
   }
 
   Place? _buscarLugar(String? id) {
