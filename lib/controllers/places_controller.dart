@@ -90,12 +90,11 @@ class PlacesController extends GetxController {
 
   bool esFavorito(Place lugar) => favoritos.any((p) => p.id == lugar.id);
 
-  // TODO(sesion-08): borra la línea de abajo y descomenta el bloque completo. (Paso 5 — favoritos exigen sesión iniciada)
   void alternarFavorito(Place lugar) {
-    // if (!Get.find<AuthController>().estaAutenticado) {
-    //   Get.snackbar('Inicia sesión', 'Necesitas una cuenta para guardar favoritos.');
-    //   return;
-    // }
+    if (!Get.find<AuthController>().estaAutenticado) {
+      Get.snackbar('Inicia sesión', 'Necesitas una cuenta para guardar favoritos.');
+      return;
+    }
     if (esFavorito(lugar)) {
       _favoritosBox.delete(lugar.id);
       favoritos.removeWhere((p) => p.id == lugar.id);

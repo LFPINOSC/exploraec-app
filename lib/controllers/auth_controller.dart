@@ -23,53 +23,49 @@ class AuthController extends GetxController {
     usuario.bindStream(FirebaseAuth.instance.authStateChanges());
   }
 
-  // TODO(sesion-08): borra la línea de abajo y descomenta el bloque completo. (Paso 3 — registro)
-  Future<bool> registrar({required String correo, required String clave}) async => false;
-  // Future<bool> registrar({required String correo, required String clave}) async {
-  //   cargando.value = true;
-  //   mensajeError.value = '';
-  //   try {
-  //     await FirebaseAuth.instance.createUserWithEmailAndPassword(
-  //       email: correo,
-  //       password: clave,
-  //     );
-  //     return true;
-  //   } on FirebaseAuthException catch (e) {
-  //     mensajeError.value = switch (e.code) {
-  //       'email-already-in-use' => 'Ya existe una cuenta con ese correo.',
-  //       'weak-password' => 'La contraseña debe tener al menos 6 caracteres.',
-  //       'invalid-email' => 'Ese correo no tiene un formato válido.',
-  //       _ => 'No se pudo crear la cuenta (${e.code}).',
-  //     };
-  //     return false;
-  //   } finally {
-  //     cargando.value = false;
-  //   }
-  // }
+  Future<bool> registrar({required String correo, required String clave}) async {
+    cargando.value = true;
+    mensajeError.value = '';
+    try {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: correo,
+        password: clave,
+      );
+      return true;
+    } on FirebaseAuthException catch (e) {
+      mensajeError.value = switch (e.code) {
+        'email-already-in-use' => 'Ya existe una cuenta con ese correo.',
+        'weak-password' => 'La contraseña debe tener al menos 6 caracteres.',
+        'invalid-email' => 'Ese correo no tiene un formato válido.',
+        _ => 'No se pudo crear la cuenta (${e.code}).',
+      };
+      return false;
+    } finally {
+      cargando.value = false;
+    }
+  }
 
-  // TODO(sesion-08): borra la línea de abajo y descomenta el bloque completo. (Paso 3 — inicio de sesión)
-  Future<bool> iniciarSesion({required String correo, required String clave}) async => false;
-  // Future<bool> iniciarSesion({required String correo, required String clave}) async {
-  //   cargando.value = true;
-  //   mensajeError.value = '';
-  //   try {
-  //     await FirebaseAuth.instance.signInWithEmailAndPassword(
-  //       email: correo,
-  //       password: clave,
-  //     );
-  //     return true;
-  //   } on FirebaseAuthException catch (e) {
-  //     mensajeError.value = switch (e.code) {
-  //       'user-not-found' => 'No existe una cuenta con ese correo.',
-  //       'wrong-password' || 'invalid-credential' => 'Contraseña incorrecta.',
-  //       'invalid-email' => 'Ese correo no tiene un formato válido.',
-  //       _ => 'No se pudo iniciar sesión (${e.code}).',
-  //     };
-  //     return false;
-  //   } finally {
-  //     cargando.value = false;
-  //   }
-  // }
+  Future<bool> iniciarSesion({required String correo, required String clave}) async {
+    cargando.value = true;
+    mensajeError.value = '';
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: correo,
+        password: clave,
+      );
+      return true;
+    } on FirebaseAuthException catch (e) {
+      mensajeError.value = switch (e.code) {
+        'user-not-found' => 'No existe una cuenta con ese correo.',
+        'wrong-password' || 'invalid-credential' => 'Contraseña incorrecta.',
+        'invalid-email' => 'Ese correo no tiene un formato válido.',
+        _ => 'No se pudo iniciar sesión (${e.code}).',
+      };
+      return false;
+    } finally {
+      cargando.value = false;
+    }
+  }
 
   Future<void> cerrarSesion() => FirebaseAuth.instance.signOut();
 }
