@@ -2,10 +2,10 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 
+import 'auth_controller.dart';
 import '../models/place.dart';
 import '../repositories/place_repository.dart';
 import '../services/location_service.dart';
-import '../services/places_api_service.dart';
 
 enum EstadoCarga { cargando, exito, error }
 
@@ -65,23 +65,14 @@ class PlacesController extends GetxController {
       final pos = await LocationService.obtenerPosicionActual();
       posicion.value = pos;
 
-      // TODO(sesion-07): borra el bloque de abajo y descomenta el bloque completo. (Paso 4 — repositorio con caché)
-      final reales = await PlacesApiService.buscarLugaresCercanos(
+      final (resultado, cache) = await _repository.obtenerLugaresCercanos(
         pos,
         forzarError: _modoDebugError,
         forzarVacio: _modoDebugVacio,
       );
-      lugares.value = [...reales, ...lugaresEjemplo];
-      desdeCache.value = false;
+      lugares.value = [...resultado, ...lugaresEjemplo];
+      desdeCache.value = cache;
       estado.value = EstadoCarga.exito;
-      // final (resultado, cache) = await _repository.obtenerLugaresCercanos(
-      //   pos,
-      //   forzarError: _modoDebugError,
-      //   forzarVacio: _modoDebugVacio,
-      // );
-      // lugares.value = [...resultado, ...lugaresEjemplo];
-      // desdeCache.value = cache;
-      // estado.value = EstadoCarga.exito;
     } catch (e) {
       mensajeError.value = '$e';
       estado.value = EstadoCarga.error;
@@ -99,17 +90,20 @@ class PlacesController extends GetxController {
 
   bool esFavorito(Place lugar) => favoritos.any((p) => p.id == lugar.id);
 
-  // TODO(sesion-07): borra la línea de abajo y descomenta el bloque completo. (Paso 5 — favoritos persistentes)
-  void alternarFavorito(Place lugar) {}
-  // void alternarFavorito(Place lugar) {
-  //   if (esFavorito(lugar)) {
-  //     _favoritosBox.delete(lugar.id);
-  //     favoritos.removeWhere((p) => p.id == lugar.id);
-  //   } else {
-  //     _favoritosBox.put(lugar.id, lugar.toMap());
-  //     favoritos.add(lugar);
-  //   }
-  // }
+  // TODO(sesion-08): borra la línea de abajo y descomenta el bloque completo. (Paso 5 — favoritos exigen sesión iniciada)
+  void alternarFavorito(Place lugar) {
+    // if (!Get.find<AuthController>().estaAutenticado) {
+    //   Get.snackbar('Inicia sesión', 'Necesitas una cuenta para guardar favoritos.');
+    //   return;
+    // }
+    if (esFavorito(lugar)) {
+      _favoritosBox.delete(lugar.id);
+      favoritos.removeWhere((p) => p.id == lugar.id);
+    } else {
+      _favoritosBox.put(lugar.id, lugar.toMap());
+      favoritos.add(lugar);
+    }
+  }
 
   double? distanciaA(Place lugar) {
     final pos = posicion.value;
