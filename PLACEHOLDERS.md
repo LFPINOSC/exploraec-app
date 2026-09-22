@@ -1,6 +1,13 @@
 # Placeholders de esta rama (sesion-08)
 
-Punto de partida: ExploraEC con favoritos y caché persistentes en Hive (Sesión 7), sin cuentas de usuario ni datos colaborativos. El objetivo de esta sesión es agregar Firebase: autenticación por correo/contraseña, y reseñas de lugares visibles para todos los usuarios (Firestore).
+Punto de partida: ExploraEC con favoritos y caché persistentes en Hive (Sesión 7), sin cuentas de usuario ni datos colaborativos. Tráela con:
+
+```bash
+git fetch starter
+git checkout starter/sesion-08 -- lib pubspec.yaml PLACEHOLDERS.md firestore.rules
+```
+
+El objetivo de esta sesión es agregar Firebase: autenticación por correo/contraseña, y reseñas de lugares visibles para todos los usuarios (Firestore). Cada bloque comentado trae, justo debajo del `TODO`, un comentario `// Por qué:` con la explicación.
 
 ## ⚠️ Este branch NO compila hasta completar el Paso 2
 

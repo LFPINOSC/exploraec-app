@@ -72,6 +72,11 @@ class _ReviewsSectionState extends State<_ReviewsSection> {
 
   Future<void> _enviarReseña() async {
     // TODO(sesion-08): borra la línea de abajo y descomenta el bloque completo. (Paso 6 — publicar reseña)
+    // Por qué: el return de abajo hace que el botón "Publicar" no
+    // haga nada — el bloque real arma un Review con los datos del
+    // usuario autenticado y lo guarda con ReviewsService.agregar,
+    // que lo escribe en Firestore y por eso aparece al instante para
+    // cualquier otro usuario que esté viendo el mismo lugar.
     return;
     // final usuario = _auth.usuario.value;
     // if (usuario == null) return; // el botón ya está oculto sin sesión, pero se valida igual

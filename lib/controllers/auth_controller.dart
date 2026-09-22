@@ -24,6 +24,10 @@ class AuthController extends GetxController {
   }
 
   // TODO(sesion-08): borra la línea de abajo y descomenta el bloque completo. (Paso 3 — registro)
+  // Por qué: async => false de abajo nunca crea una cuenta real — el
+  // bloque real llama a createUserWithEmailAndPassword y traduce cada
+  // FirebaseAuthException a un mensaje legible, en vez de dejar pasar
+  // el error técnico crudo del SDK directo a la pantalla.
   Future<bool> registrar({required String correo, required String clave}) async => false;
   // Future<bool> registrar({required String correo, required String clave}) async {
   //   cargando.value = true;
@@ -48,6 +52,10 @@ class AuthController extends GetxController {
   // }
 
   // TODO(sesion-08): borra la línea de abajo y descomenta el bloque completo. (Paso 3 — inicio de sesión)
+  // Por qué: mismo patrón que registrar() — signInWithEmailAndPassword
+  // valida las credenciales contra Firebase, y cada código de error
+  // (user-not-found, wrong-password, etc.) se traduce a un mensaje
+  // que tiene sentido para quien está llenando el formulario.
   Future<bool> iniciarSesion({required String correo, required String clave}) async => false;
   // Future<bool> iniciarSesion({required String correo, required String clave}) async {
   //   cargando.value = true;
