@@ -20,6 +20,10 @@ class PlaceCard extends StatelessWidget {
           MaterialPageRoute(builder: (context) => DetailScreen(place: place)),
         ),
         // TODO(sesion-03): borra la línea de abajo y descomenta el bloque completo. (Paso 5 — accesibilidad)
+        // Por qué: sin Semantics, un lector de pantalla solo anuncia los
+        // textos sueltos de la tarjeta, sin contexto — el label/hint de
+        // abajo describe la tarjeta completa como un solo elemento
+        // interactivo, con instrucción de qué hace al tocarla.
         child: _buildContenido(context),
         // child: Semantics(
         //   label: '${place.nombre}, categoría ${place.categoria}',

@@ -1,6 +1,13 @@
 # Placeholders de esta rama (sesion-03)
 
-Punto de partida: ExploraEC con el catálogo de widgets de la Sesión 2 ya resuelto (modelo `Place`, `PlaceCard`, Inicio/Detalle/Formulario, navegación inferior). El objetivo de esta sesión es aplicar tema visual de marca, estados de carga/vacío/error, un layout responsivo y una pasada de accesibilidad — sin agregar pantallas nuevas.
+Punto de partida: ExploraEC con el catálogo de widgets de la Sesión 2 ya resuelto (modelo `Place`, `PlaceCard`, Inicio/Detalle/Formulario, navegación inferior). Tráela con:
+
+```bash
+git fetch starter
+git checkout starter/sesion-03 -- lib pubspec.yaml PLACEHOLDERS.md
+```
+
+El objetivo de esta sesión es aplicar tema visual de marca, estados de carga/vacío/error, un layout responsivo y una pasada de accesibilidad — sin agregar pantallas nuevas. Cada bloque comentado trae, justo debajo del `TODO`, un comentario `// Por qué:` con la explicación — léelo antes de descomentar.
 
 | Archivo | Qué descomentar | Paso de la práctica |
 |---|---|---|

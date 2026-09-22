@@ -60,6 +60,10 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       // TODO(sesion-03): borra la línea de abajo y descomenta el bloque completo. (Paso 3 — estados loading/vacío/error)
+      // Por qué: el Center fijo de abajo no distingue entre "cargando",
+      // "vacío" y "falló" — el FutureBuilder real inspecciona el estado
+      // del snapshot y dibuja LoadingView/ErrorView/EmptyView según
+      // corresponda, para que la pantalla nunca quede en blanco.
       body: const Center(child: Text('Cargando lugares...')),
       // body: FutureBuilder<List<Place>>(
       //   future: _futuroLugares,
@@ -91,6 +95,10 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   // TODO(sesion-03): borra la línea de abajo y descomenta el bloque completo. (Paso 4 — layout responsivo)
+  // Por qué: el ListView.builder de abajo es siempre una sola columna,
+  // sin importar el ancho de pantalla — la versión real usa
+  // LayoutBuilder para leer el ancho disponible y elegir ListView
+  // (teléfono angosto) o GridView de 2-3 columnas (pantalla ancha).
   Widget _buildLista(List<Place> lugares) => ListView.builder(
         itemCount: lugares.length,
         itemBuilder: (context, index) => PlaceCard(place: lugares[index]),

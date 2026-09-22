@@ -16,6 +16,10 @@ class ExploraEcApp extends StatelessWidget {
     return MaterialApp(
       title: 'ExploraEC',
       // TODO(sesion-03): borra la línea de abajo y descomenta el bloque completo. (Paso 1 — aplicar el tema)
+      // Por qué: ThemeData(useMaterial3: true) es el tema genérico de
+      // Flutter — AppTheme.theme aplica la paleta de colores, tipografía
+      // y espaciado propios de ExploraEC en toda la app de una sola vez,
+      // sin tener que repetir estilos pantalla por pantalla.
       theme: ThemeData(useMaterial3: true),
       // theme: AppTheme.theme,
       home: const RootShell(),
