@@ -22,6 +22,10 @@ class Place {
 }
 
 // TODO(sesion-02): borra la línea de abajo y descomenta el bloque completo.
+// Por qué: sin datos de ejemplo no hay nada que dibujar en la lista de
+// Inicio (Paso 2) — estos 6 lugares reales de Quito permiten probar
+// PlaceCard y ListView.builder antes de conectar una fuente de datos
+// real en la Sesión 5.
 final List<Place> lugaresEjemplo = [];
 // final List<Place> lugaresEjemplo = [
 //   Place(

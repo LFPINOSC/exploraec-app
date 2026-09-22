@@ -18,6 +18,10 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(title: const Text('ExploraEC')),
       // TODO(sesion-02): borra la línea de abajo y descomenta el bloque completo.
+      // Por qué: el Center de abajo es solo un placeholder — el
+      // ListView.builder real recorre lugaresEjemplo y dibuja un
+      // PlaceCard por cada lugar, construyendo únicamente los ítems
+      // visibles en pantalla, no la lista completa de una vez.
       body: const Center(child: Text('Cargando lugares...')),
       // body: ListView.builder(
       //   itemCount: lugaresEjemplo.length,

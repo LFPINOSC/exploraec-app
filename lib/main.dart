@@ -34,6 +34,10 @@ class _RootShellState extends State<RootShell> {
   Widget build(BuildContext context) {
     return Scaffold(
       // TODO(sesion-02): borra la línea de abajo y descomenta el bloque completo. (cuerpo según pestaña)
+      // Por qué: un body fijo en HomeScreen ignoraría qué pestaña está
+      // activa — este switch sobre _indiceActual es lo que hace que
+      // BottomNavigationBar (más abajo) realmente cambie de contenido
+      // al tocar cada pestaña, en vez de solo resaltarla.
       body: const HomeScreen(),
       // body: switch (_indiceActual) {
       //   0 => const HomeScreen(),
@@ -42,6 +46,9 @@ class _RootShellState extends State<RootShell> {
       // },
 
       // TODO(sesion-02): borra la línea de abajo y descomenta el bloque completo. (barra inferior)
+      // Por qué: sin este widget no hay pestañas que tocar — junto con
+      // el switch de arriba, BottomNavigationBar alterna entre
+      // Inicio/Mapa/Favoritos sin apilarlas como haría Navigator.push.
       bottomNavigationBar: null,
       // bottomNavigationBar: BottomNavigationBar(
       //   currentIndex: _indiceActual,
