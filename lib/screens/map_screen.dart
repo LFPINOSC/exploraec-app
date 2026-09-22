@@ -65,6 +65,10 @@ class _MapScreenState extends State<MapScreen> {
           userAgentPackageName: 'com.tmo.exploraec',
         ),
         // TODO(sesion-04): borra la línea de abajo y descomenta el bloque completo. (Paso 4 — marcadores)
+        // Por qué: sin marcadores el mapa se ve pero no comunica nada —
+        // el bloque real agrega uno para la posición del usuario y uno
+        // por cada Place de la lista de ejemplo, cada uno navegando al
+        // Detalle (con la distancia ya calculada) al tocarlo.
         const MarkerLayer(markers: []),
         // MarkerLayer(
         //   markers: [

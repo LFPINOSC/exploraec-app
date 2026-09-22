@@ -1,6 +1,13 @@
 # Placeholders de esta rama (sesion-04)
 
-Punto de partida: ExploraEC con tema, estados loading/vacío/error y layout responsivo ya resueltos (Sesión 3). El objetivo de esta sesión es reemplazar la pestaña "Mapa" (que hasta ahora solo mostraba un texto de aviso) por un mapa real con la posición del usuario y marcadores de los lugares de ejemplo.
+Punto de partida: ExploraEC con tema, estados loading/vacío/error y layout responsivo ya resueltos (Sesión 3). Tráela con:
+
+```bash
+git fetch starter
+git checkout starter/sesion-04 -- lib pubspec.yaml PLACEHOLDERS.md
+```
+
+El objetivo de esta sesión es reemplazar la pestaña "Mapa" (que hasta ahora solo mostraba un texto de aviso) por un mapa real con la posición del usuario y marcadores de los lugares de ejemplo. Cada bloque comentado trae, justo debajo del `TODO`, un comentario `// Por qué:` con la explicación.
 
 ## Archivos nuevos ya completos (sin `TODO`)
 - `lib/services/location_service.dart` — salvo el bloque de solicitud de permiso, ver tabla abajo.
@@ -17,7 +24,7 @@ Punto de partida: ExploraEC con tema, estados loading/vacío/error y layout resp
 
 ## Edición manual fuera de este repo (no versionada aquí)
 
-Este repo no incluye el esqueleto completo de `flutter create` (ver `README.md`), así que los permisos nativos se agregan **directamente en tu propio proyecto** `exploraec`, no aquí:
+`android/` e `ios/` nunca viven en este repo (ver `README.md`) — los generó `flutter create` una sola vez en la Sesión 1 y no se vuelven a tocar con `git checkout`. Los permisos nativos de esta sesión se agregan **directamente en tu propio proyecto** `exploraec`, a mano:
 
 **Android** — agregar dentro de `android/app/src/main/AndroidManifest.xml`, como hijo directo de `<manifest>` (antes de `<application>`):
 ```xml
@@ -40,4 +47,4 @@ flutter pub get
 flutter run
 ```
 
-Con la rama recién clonada (antes de descomentar nada), la pestaña Mapa pide el permiso pero nunca lo solicita de verdad (`permiso` queda fijo en `denied`), así que siempre muestra el error de permiso denegado — es el comportamiento esperado hasta completar el Paso 3.
+Con la rama recién traída (antes de descomentar nada), la pestaña Mapa pide el permiso pero nunca lo solicita de verdad (`permiso` queda fijo en `denied`), así que siempre muestra el error de permiso denegado — es el comportamiento esperado hasta completar el Paso 3.
