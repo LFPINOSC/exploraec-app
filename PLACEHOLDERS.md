@@ -31,10 +31,10 @@ A diferencia de todas las sesiones anteriores, `flutter pub get && flutter run` 
 |---|---|---|
 | `lib/controllers/auth_controller.dart` | `registrar()`: borrar `async => false;` y descomentar el cuerpo real (`createUserWithEmailAndPassword` + manejo de `FirebaseAuthException`) | Paso 3 |
 | `lib/controllers/auth_controller.dart` | `iniciarSesion()`: borrar `async => false;` y descomentar el cuerpo real (`signInWithEmailAndPassword` + manejo de `FirebaseAuthException`) | Paso 3 |
-| `lib/controllers/places_controller.dart` | `alternarFavorito()`: borrar la línea `return;` (bien al inicio, dentro del cuerpo) y descomentar las 3 líneas que verifican `Get.find<AuthController>().estaAutenticado` antes de continuar | Paso 5 |
-| `lib/screens/detail_screen.dart` | `_enviarReseña()`: borrar `return;` y descomentar el bloque real que arma un `Review` y llama a `ReviewsService.agregar(...)` | Paso 6 |
+| `lib/controllers/places_controller.dart` | `alternarFavorito()`: borrar la línea `return;` (bien al inicio, dentro del cuerpo) y descomentar las 3 líneas que verifican `Get.find<AuthController>().estaAutenticado` antes de continuar | Paso 4 |
+| `lib/screens/detail_screen.dart` | `_enviarReseña()`: borrar `return;` y descomentar el bloque real que arma un `Review` y llama a `ReviewsService.agregar(...)` | Paso 5 |
 
-Nota del analizador: `places_controller.dart` importa `auth_controller.dart` desde antes de descomentar el Paso 5 — hasta ese momento, el analizador puede marcar ese import como "no usado todavía" dentro del bloque comentado; es esperado, no un error.
+Nota del analizador: `places_controller.dart` importa `auth_controller.dart` desde antes de descomentar el Paso 4 — hasta ese momento, el analizador puede marcar ese import como "no usado todavía" dentro del bloque comentado; es esperado, no un error.
 
 ## Comando de arranque
 
