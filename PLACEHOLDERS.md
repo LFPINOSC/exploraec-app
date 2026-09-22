@@ -1,6 +1,13 @@
 # Placeholders de esta rama (sesion-07)
 
-Punto de partida: ExploraEC con `PlacesController` (GetX) ya compartido entre Inicio y Mapa (Sesión 6), sin ninguna persistencia — cerrar la app pierde todo, y sin conexión no hay nada que mostrar salvo el error. El objetivo de esta sesión es agregar una caché local con Hive (`PlaceRepository`) y favoritos que sobreviven reiniciar la app.
+Punto de partida: ExploraEC con `PlacesController` (GetX) ya compartido entre Inicio y Mapa (Sesión 6), sin ninguna persistencia — cerrar la app pierde todo, y sin conexión no hay nada que mostrar salvo el error. Tráela con:
+
+```bash
+git fetch starter
+git checkout starter/sesion-07 -- lib pubspec.yaml PLACEHOLDERS.md
+```
+
+El objetivo de esta sesión es agregar una caché local con Hive (`PlaceRepository`) y favoritos que sobreviven reiniciar la app. Cada bloque comentado trae, justo debajo del `TODO`, un comentario `// Por qué:` con la explicación.
 
 ## Archivos nuevos ya completos (sin `TODO`)
 - `lib/repositories/place_repository.dart` — completo, no tiene marcadores. Se usa recién al completar el Paso 4 en `places_controller.dart` (ver tabla de abajo) — hasta entonces, el analizador puede marcar el campo `_repository` del controller como "no usado", es esperado.
@@ -18,7 +25,7 @@ Punto de partida: ExploraEC con `PlacesController` (GetX) ya compartido entre In
 | `lib/controllers/places_controller.dart` | En `cargarLugares()`: borrar el bloque que llama a `PlacesApiService.buscarLugaresCercanos(...)` directamente y descomentar el bloque que llama a `_repository.obtenerLugaresCercanos(...)` (con caché) | Paso 4 |
 | `lib/controllers/places_controller.dart` | Borrar `void alternarFavorito(Place lugar) {}` y descomentar el cuerpo real de `alternarFavorito` (agrega/quita de `_favoritosBox` y de la lista reactiva `favoritos`) | Paso 5 |
 
-Con la rama recién clonada (antes de descomentar nada), la app funciona igual que al final de la Sesión 6 (sin caché, sin favoritos funcionales — el corazón de `PlaceCard` se ve pero no persiste nada todavía). El orden importa: primero el Paso 4 (repositorio), después el Paso 5 (favoritos) — ambos son independientes entre sí, pero seguir ese orden es el que sigue el instructivo.
+Con la rama recién traída (antes de descomentar nada), la app funciona igual que al final de la Sesión 6 (sin caché, sin favoritos funcionales — el corazón de `PlaceCard` se ve pero no persiste nada todavía). El orden importa: primero el Paso 4 (repositorio), después el Paso 5 (favoritos) — ambos son independientes entre sí, pero seguir ese orden es el que sigue el instructivo.
 
 ## Comando de arranque
 

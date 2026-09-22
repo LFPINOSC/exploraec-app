@@ -66,6 +66,11 @@ class PlacesController extends GetxController {
       posicion.value = pos;
 
       // TODO(sesion-07): borra el bloque de abajo y descomenta el bloque completo. (Paso 4 — repositorio con caché)
+      // Por qué: el bloque de abajo llama a PlacesApiService directo,
+      // igual que en la Sesión 5 — si no hay red, cargarLugares() falla
+      // sin más. El bloque real pasa por _repository.obtenerLugaresCercanos,
+      // que primero intenta la red y, si falla, devuelve la última copia
+      // guardada en Hive (marcando desdeCache = true) en vez de fallar.
       final reales = await PlacesApiService.buscarLugaresCercanos(
         pos,
         forzarError: _modoDebugError,
@@ -100,6 +105,10 @@ class PlacesController extends GetxController {
   bool esFavorito(Place lugar) => favoritos.any((p) => p.id == lugar.id);
 
   // TODO(sesion-07): borra la línea de abajo y descomenta el bloque completo. (Paso 5 — favoritos persistentes)
+  // Por qué: el método vacío de abajo no guarda ni quita nada — la
+  // versión real agrega o elimina el lugar de _favoritosBox (Hive, lo
+  // que sobrevive reiniciar la app) y de la lista reactiva favoritos
+  // (lo que Obx observa para actualizar el ícono al instante).
   void alternarFavorito(Place lugar) {}
   // void alternarFavorito(Place lugar) {
   //   if (esFavorito(lugar)) {
