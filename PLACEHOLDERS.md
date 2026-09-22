@@ -1,6 +1,13 @@
 # Placeholders de esta rama (sesion-06)
 
-Punto de partida: ExploraEC con Overpass API resuelta en Inicio (Sesión 5), pero el Mapa todavía mostrando `lugaresEjemplo` por separado — dos fuentes de datos desincronizadas. El objetivo de esta sesión es centralizar todo en un `PlacesController` de GetX que ambas pantallas comparten, y refactorizar la navegación a `Get.to`.
+Punto de partida: ExploraEC con Overpass API resuelta en Inicio (Sesión 5), pero el Mapa todavía mostrando `lugaresEjemplo` por separado — dos fuentes de datos desincronizadas. Tráela con:
+
+```bash
+git fetch starter
+git checkout starter/sesion-06 -- lib pubspec.yaml PLACEHOLDERS.md
+```
+
+El objetivo de esta sesión es centralizar todo en un `PlacesController` de GetX que ambas pantallas comparten, y refactorizar la navegación a `Get.to`. Cada bloque comentado trae, justo debajo del `TODO`, un comentario `// Por qué:` con la explicación.
 
 ## Archivos nuevos ya completos (sin `TODO`)
 - `lib/controllers/places_controller.dart` — estado compartido (`RxList<Place> lugares`, `Rx<EstadoCarga> estado`, `Rx<Position?> posicion`), salvo el cuerpo de `cargarLugares()` (ver tabla de abajo).
@@ -18,7 +25,7 @@ Punto de partida: ExploraEC con Overpass API resuelta en Inicio (Sesión 5), per
 | `lib/screens/home_screen.dart` | Borrar `body: const Center(child: Text('Pendiente de conectar con Obx'))` y descomentar el `body: Obx(() { ... })` completo | Paso 4 |
 | `lib/screens/map_screen.dart` | Borrar `body: const Center(child: Text('Pendiente de conectar con Obx'))` y descomentar el `body: Obx(() { ... })` completo | Paso 4 |
 
-Con la rama recién clonada (antes de descomentar nada), tanto Inicio como el Mapa muestran el texto "Pendiente de conectar con Obx" — es el comportamiento esperado hasta completar los Pasos 3 y 4. El orden importa: el controller (Paso 3) debe quedar resuelto antes de que las pantallas (Paso 4) tengan algo real que mostrar.
+Con la rama recién traída (antes de descomentar nada), tanto Inicio como el Mapa muestran el texto "Pendiente de conectar con Obx" — es el comportamiento esperado hasta completar los Pasos 3 y 4. El orden importa: el controller (Paso 3) debe quedar resuelto antes de que las pantallas (Paso 4) tengan algo real que mostrar.
 
 ## Comando de arranque
 

@@ -24,6 +24,9 @@ class MapScreen extends GetView<PlacesController> {
     return Scaffold(
       appBar: AppBar(title: const Text('Mapa')),
       // TODO(sesion-06): borra la línea de abajo y descomenta el bloque completo. (Paso 4 — reactividad con Obx)
+      // Por qué: mismo patrón que HomeScreen — el Obx real lee el mismo
+      // PlacesController que ya usa Inicio, así que el Mapa y la lista
+      // muestran siempre los mismos lugares, sin duplicar el estado.
       body: const Center(child: Text('Pendiente de conectar con Obx')),
       // body: Obx(() {
       //   if (controller.estado.value == EstadoCarga.cargando || controller.posicion.value == null) {

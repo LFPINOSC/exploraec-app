@@ -37,6 +37,10 @@ class HomeScreen extends GetView<PlacesController> {
         ],
       ),
       // TODO(sesion-06): borra la línea de abajo y descomenta el bloque completo. (Paso 4 — reactividad con Obx)
+      // Por qué: el texto fijo de abajo nunca cambia porque nada lo
+      // observa — Obx reconstruye automáticamente su contenido cada vez
+      // que una variable Rx que lee (controller.estado, controller.lugares)
+      // cambia, sin necesitar setState ni StatefulWidget en esta pantalla.
       body: const Center(child: Text('Pendiente de conectar con Obx')),
       // body: Obx(() {
       //   if (controller.estado.value == EstadoCarga.cargando) {

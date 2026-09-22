@@ -44,6 +44,11 @@ class PlacesController extends GetxController {
     estado.value = EstadoCarga.cargando;
 
     // TODO(sesion-06): borra la línea de abajo y descomenta el bloque completo. (Paso 3 — conectar el controller a los servicios reales)
+    // Por qué: las 2 líneas de abajo fuerzan éxito con una lista vacía,
+    // sin llamar a nada real — el bloque try/catch real es exactamente
+    // la misma lógica de _cargarLugaresReales() de la Sesión 5 (posición
+    // → Overpass → estados), ahora centralizada acá para que Inicio y
+    // Mapa compartan una sola fuente de verdad en vez de cada uno la suya.
     lugares.value = [];
     estado.value = EstadoCarga.exito;
     // try {
