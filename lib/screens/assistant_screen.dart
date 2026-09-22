@@ -35,6 +35,12 @@ class _AssistantScreenState extends State<AssistantScreen> {
     });
 
     // TODO(sesion-09): borra el bloque de abajo (stub) y descomenta el bloque real. (Paso 4 — conectar el backend)
+    // Por qué: el stub de abajo espera un poco y siempre muestra el
+    // mismo mensaje fijo, sin llamar a nada — el bloque real llama a
+    // AiAssistantService, que a su vez llama al backend propio (nunca
+    // directo a un proveedor de LLM), pasándole la consulta, los
+    // lugares ya cargados y la posición, para que la recomendación
+    // salga de datos reales de la app, no de texto inventado.
     await Future.delayed(const Duration(milliseconds: 300));
     setState(() {
       _cargando = false;

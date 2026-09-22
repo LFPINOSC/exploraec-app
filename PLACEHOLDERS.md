@@ -1,6 +1,13 @@
 # Placeholders de esta rama (sesion-09)
 
-Punto de partida: ExploraEC con autenticación (Firebase Auth) y reseñas colaborativas (Firestore) de la Sesión 8. El objetivo de esta sesión es agregar la pantalla "Asistente ExploraIA", que llama a un backend propio (nunca a un proveedor de LLM directamente) para recomendar un lugar entre los ya cargados.
+Punto de partida: ExploraEC con autenticación (Firebase Auth) y reseñas colaborativas (Firestore) de la Sesión 8. Tráela con:
+
+```bash
+git fetch starter
+git checkout starter/sesion-09 -- lib pubspec.yaml PLACEHOLDERS.md mock-server
+```
+
+El objetivo de esta sesión es agregar la pantalla "Asistente ExploraIA", que llama a un backend propio (nunca a un proveedor de LLM directamente) para recomendar un lugar entre los ya cargados. El bloque comentado trae, justo debajo del `TODO`, un comentario `// Por qué:` con la explicación.
 
 ## Archivos nuevos ya completos (sin `TODO`)
 - `lib/services/ai_assistant_service.dart` — completo. Llama a `<LLM_BACKEND_URL>/recomendacion` (constante `kAiBackendUrl`, configurable con `--dart-define` sin tocar el código).
