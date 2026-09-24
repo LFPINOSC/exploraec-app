@@ -13,7 +13,7 @@ class PlaceCard extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       child: InkWell(
-        // TODO(sesion-02): borra la línea de abajo y descomenta el bloque completo. (Paso 4 — navegación al Detalle)
+        // TODO(sesion-02): borra la línea de abajo y descomenta el bloque completo. (Paso 6 — navegación al Detalle)
         // Por qué: sin este onTap la tarjeta se ve pero no lleva a
         // ningún lado — Navigator.push agrega DetailScreen encima de
         // la pila, pasándole el Place ya completo por su constructor.
@@ -23,7 +23,7 @@ class PlaceCard extends StatelessWidget {
         //   MaterialPageRoute(builder: (context) => DetailScreen(place: place)),
         // ),
 
-        // TODO(sesion-02): borra la línea de abajo y descomenta el bloque completo. (Paso 3 — cuerpo de la tarjeta)
+        // TODO(sesion-02): borra la línea de abajo y descomenta el bloque completo. (Paso 5 — cuerpo de la tarjeta)
         // Por qué: el Padding con texto fijo de abajo es solo un
         // placeholder que compila — el Row/Column real es la misma
         // composición Card+Row+Column+Text vista en teoría, con el
