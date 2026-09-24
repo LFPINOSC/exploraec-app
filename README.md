@@ -17,7 +17,7 @@ Justo debajo de cada `TODO`, un comentario `// Por qué:` explica qué hace ese 
 Configuración (una sola vez, al abrir la Sesión 2):
 ```bash
 cd exploraec
-git remote add starter <GITHUB_REPOSITORY_URL>
+git remote add starter https://github.com/Patricio-CEDIA/exploraec-app.git
 git fetch starter
 ```
 
@@ -34,7 +34,7 @@ El flujo esperado en cada sesión (a partir de la Sesión 2):
 ```bash
 flutter create exploraec        # Sesión 1, una sola vez
 cd exploraec
-# Sesión 2 en adelante: git remote add starter <GITHUB_REPOSITORY_URL> (una sola vez)
+# Sesión 2 en adelante: git remote add starter https://github.com/Patricio-CEDIA/exploraec-app.git (una sola vez)
 #                       git fetch starter && git checkout starter/sesion-NN -- lib pubspec.yaml PLACEHOLDERS.md
 flutter pub get
 flutter run
