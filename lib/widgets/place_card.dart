@@ -26,6 +26,7 @@ class PlaceCard extends StatelessWidget {
           label: '${place.nombre}, categoría ${place.categoria}',
           hint: 'Toca dos veces para ver el detalle',
           button: true,
+          excludeSemantics: true,
           child: _buildContenido(context),
         ),
       ),

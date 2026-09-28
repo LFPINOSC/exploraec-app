@@ -78,7 +78,7 @@ class HomeScreen extends GetView<PlacesController> {
           padding: const EdgeInsets.all(AppSpacing.sm),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: columnas,
-            childAspectRatio: 2.4,
+            childAspectRatio: 2.2,
           ),
           itemCount: lugares.length,
           itemBuilder: (context, index) => PlaceCard(place: lugares[index]),
