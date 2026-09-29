@@ -16,10 +16,11 @@ El objetivo de esta sesión es aplicar tema visual de marca, estados de carga/va
 | `lib/screens/home_screen.dart` | El `body: FutureBuilder<List<Place>>(...)` completo, con `LoadingView`/`ErrorView`/`EmptyView` | Paso 3 |
 | `lib/screens/home_screen.dart` | El método `_buildLista` con `LayoutBuilder` (reemplaza la versión simple de `ListView` de arriba por la versión responsiva con `GridView` en pantallas anchas) | Paso 4 |
 | `lib/widgets/place_card.dart` | El `Semantics(...)` que envuelve el contenido de la tarjeta | Paso 5 |
+| `lib/main.dart` | **Opcional:** `darkTheme: AppTheme.darkTheme,` y `themeMode: ThemeMode.system,` (solo descomentar, no hay nada que borrar). `AppTheme.darkTheme` ya viene completo en `lib/theme/app_theme.dart` | Paso 6 (opcional) |
 
 En cada archivo, primero se **borra** el bloque provisional (el que ya está activo) y luego se **descomenta** el bloque de abajo — nunca dejes los dos activos a la vez. Atajo del editor para descomentar un bloque seleccionado: `Ctrl+/` en Windows/Linux, `Cmd+/` en Mac.
 
-`lib/theme/app_theme.dart`, `lib/widgets/loading_view.dart`, `lib/widgets/empty_view.dart` y `lib/widgets/error_view.dart` ya están completos, sin `TODO` — se explican en la teoría y se usan tal cual desde el Paso 1/3.
+`lib/theme/app_theme.dart` (incluido `darkTheme`), `lib/widgets/loading_view.dart`, `lib/widgets/empty_view.dart` y `lib/widgets/error_view.dart` ya están completos, sin `TODO` — se explican en la teoría y se usan tal cual desde el Paso 1/3.
 
 ## Comando de arranque
 
