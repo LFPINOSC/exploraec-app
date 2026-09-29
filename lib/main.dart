@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 
 import 'bindings/places_binding.dart';
 import 'screens/home_screen.dart';
-import 'screens/map_placeholder_screen.dart';
+import 'screens/map_screen.dart';
 import 'screens/favorites_placeholder_screen.dart';
 import 'theme/app_theme.dart';
 
@@ -46,7 +46,7 @@ class _RootShellState extends State<RootShell> {
     return Scaffold(
       body: switch (_indiceActual) {
         0 => const HomeScreen(),
-        1 => const MapPlaceholderScreen(),
+        1 => const MapScreen(),
         _ => const FavoritesPlaceholderScreen(),
       },
       bottomNavigationBar: BottomNavigationBar(

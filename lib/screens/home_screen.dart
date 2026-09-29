@@ -37,27 +37,21 @@ class HomeScreen extends GetView<PlacesController> {
           ),
         ],
       ),
-      // TODO(sesion-04): borra la línea de abajo y descomenta el bloque completo. (Paso 3 — reactividad con Obx)
-      // Por qué: el texto fijo de abajo nunca cambia porque nada lo
-      // observa — Obx reconstruye automáticamente su contenido cada vez
-      // que una variable Rx que lee (controller.estado, controller.lugares)
-      // cambia, sin necesitar setState ni StatefulWidget en esta pantalla.
-      body: const Center(child: Text('Pendiente de conectar con Obx')),
-      // body: Obx(() {
-      //   if (controller.estado.value == EstadoCarga.cargando) {
-      //     return const LoadingView(mensaje: 'Buscando lugares cercanos...');
-      //   }
-      //   if (controller.estado.value == EstadoCarga.error) {
-      //     return ErrorView(
-      //       mensaje: controller.mensajeError.value,
-      //       onReintentar: controller.cargarLugares,
-      //     );
-      //   }
-      //   if (controller.lugares.isEmpty) {
-      //     return const EmptyView(mensaje: 'Todavía no hay lugares guardados');
-      //   }
-      //   return _buildLista(controller.lugares);
-      // }),
+      body: Obx(() {
+        if (controller.estado.value == EstadoCarga.cargando) {
+          return const LoadingView(mensaje: 'Buscando lugares cercanos...');
+        }
+        if (controller.estado.value == EstadoCarga.error) {
+          return ErrorView(
+            mensaje: controller.mensajeError.value,
+            onReintentar: controller.cargarLugares,
+          );
+        }
+        if (controller.lugares.isEmpty) {
+          return const EmptyView(mensaje: 'Todavía no hay lugares guardados');
+        }
+        return _buildLista(controller.lugares);
+      }),
       floatingActionButton: FloatingActionButton(
         onPressed: () => Get.to(() => const AddPlaceScreen()),
         child: const Icon(Icons.add),
