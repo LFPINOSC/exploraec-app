@@ -22,11 +22,12 @@ class _HomeScreenState extends State<HomeScreen> {
       // ListView.builder real recorre lugaresEjemplo y dibuja un
       // PlaceCard por cada lugar, construyendo únicamente los ítems
       // visibles en pantalla, no la lista completa de una vez.
-      body: const Center(child: Text('Cargando lugares...')),
-      // body: ListView.builder(
-      //   itemCount: lugaresEjemplo.length,
-      //   itemBuilder: (context, index) => PlaceCard(place: lugaresEjemplo[index]),
-      // ),
+      //body: const Center(child: Text('Cargando lugares...')),
+      body: ListView.builder(
+        itemCount: lugaresEjemplo.length,
+        itemBuilder: (context, index) =>
+            PlaceCard(place: lugaresEjemplo[index]),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           await Navigator.push(

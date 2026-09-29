@@ -17,51 +17,53 @@ class PlaceCard extends StatelessWidget {
         // Por qué: sin este onTap la tarjeta se ve pero no lleva a
         // ningún lado — Navigator.push agrega DetailScreen encima de
         // la pila, pasándole el Place ya completo por su constructor.
-        onTap: null,
-        // onTap: () => Navigator.push(
-        //   context,
-        //   MaterialPageRoute(builder: (context) => DetailScreen(place: place)),
-        // ),
+        //onTap: null,
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => DetailScreen(place: place)),
+        ),
 
         // TODO(sesion-02): borra la línea de abajo y descomenta el bloque completo. (Paso 5 — cuerpo de la tarjeta)
         // Por qué: el Padding con texto fijo de abajo es solo un
         // placeholder que compila — el Row/Column real es la misma
         // composición Card+Row+Column+Text vista en teoría, con el
         // nombre envuelto en Expanded para que nunca desborde.
-        child: const Padding(
-          padding: EdgeInsets.all(12),
-          child: Text('Cargando tarjeta...'),
+        //child: const Padding(
+        //padding: EdgeInsets.all(12),
+        //child: Text('Cargando tarjeta...'),
+        //),
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Icon(Icons.place, size: 32),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      place.nombre,
+                      style: const TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.bold),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 4),
+                    Text(place.categoria,
+                        style: const TextStyle(color: Colors.grey)),
+                    const SizedBox(height: 4),
+                    Text(
+                      place.descripcion,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
-        // child: Padding(
-        //   padding: const EdgeInsets.all(12),
-        //   child: Row(
-        //     crossAxisAlignment: CrossAxisAlignment.start,
-        //     children: [
-        //       const Icon(Icons.place, size: 32),
-        //       const SizedBox(width: 12),
-        //       Expanded(
-        //         child: Column(
-        //           crossAxisAlignment: CrossAxisAlignment.start,
-        //           children: [
-        //             Text(
-        //               place.nombre,
-        //               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-        //               overflow: TextOverflow.ellipsis,
-        //             ),
-        //             const SizedBox(height: 4),
-        //             Text(place.categoria, style: const TextStyle(color: Colors.grey)),
-        //             const SizedBox(height: 4),
-        //             Text(
-        //               place.descripcion,
-        //               maxLines: 2,
-        //               overflow: TextOverflow.ellipsis,
-        //             ),
-        //           ],
-        //         ),
-        //       ),
-        //     ],
-        //   ),
-        // ),
       ),
     );
   }

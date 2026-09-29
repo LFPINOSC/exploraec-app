@@ -38,27 +38,27 @@ class _RootShellState extends State<RootShell> {
       // activa — este switch sobre _indiceActual es lo que hace que
       // BottomNavigationBar (más abajo) realmente cambie de contenido
       // al tocar cada pestaña, en vez de solo resaltarla.
-      body: const HomeScreen(),
-      // body: switch (_indiceActual) {
-      //   0 => const HomeScreen(),
-      //   1 => const MapPlaceholderScreen(),
-      //   _ => const FavoritesPlaceholderScreen(),
-      // },
+      //body: const HomeScreen(),
+       body: switch (_indiceActual) {
+         0 => const HomeScreen(),
+         1 => const MapPlaceholderScreen(),
+         _ => const FavoritesPlaceholderScreen(),
+       },
 
       // TODO(sesion-02): borra la línea de abajo y descomenta el bloque completo. (barra inferior)
       // Por qué: sin este widget no hay pestañas que tocar — junto con
       // el switch de arriba, BottomNavigationBar alterna entre
       // Inicio/Mapa/Favoritos sin apilarlas como haría Navigator.push.
-      bottomNavigationBar: null,
-      // bottomNavigationBar: BottomNavigationBar(
-      //   currentIndex: _indiceActual,
-      //   onTap: (i) => setState(() => _indiceActual = i),
-      //   items: const [
-      //     BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Inicio'),
-      //     BottomNavigationBarItem(icon: Icon(Icons.map), label: 'Mapa'),
-      //     BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'Favoritos'),
-      //   ],
-      // ),
+      //bottomNavigationBar: null,
+       bottomNavigationBar: BottomNavigationBar(
+         currentIndex: _indiceActual,
+         onTap: (i) => setState(() => _indiceActual = i),
+         items: const [
+           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Inicio'),
+           BottomNavigationBarItem(icon: Icon(Icons.map), label: 'Mapa'),
+           BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'Favoritos'),
+         ],
+       ),
     );
   }
 }
