@@ -1,7 +1,7 @@
 /// Modelo de datos de ExploraEC — Sesión 2.
 ///
 /// Por ahora vive únicamente en memoria: [lugaresEjemplo] es una lista
-/// escrita a mano. La Sesión 5 la reemplaza por datos reales obtenidos
+/// escrita a mano. La Sesión 6 la reemplaza por datos reales obtenidos
 /// de la Overpass API (OpenStreetMap).
 class Place {
   final String id;
@@ -25,7 +25,7 @@ class Place {
 // Por qué: sin datos de ejemplo no hay nada que dibujar en la lista de
 // Inicio (Paso 4) — estos 6 lugares reales de Quito permiten probar
 // PlaceCard y ListView.builder antes de conectar una fuente de datos
-// real en la Sesión 5.
+// real en la Sesión 6.
 final List<Place> lugaresEjemplo = [];
 // final List<Place> lugaresEjemplo = [
 //   Place(

@@ -4,7 +4,7 @@ import '../widgets/place_card.dart';
 import 'add_place_screen.dart';
 
 /// Pantalla de Inicio: lista de lugares de ejemplo — Sesión 2.
-/// Desde la Sesión 5, esta misma pantalla muestra lugares reales.
+/// Desde la Sesión 6, esta misma pantalla muestra lugares reales.
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
