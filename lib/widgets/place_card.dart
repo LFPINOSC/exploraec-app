@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
 import '../models/place.dart';
 import '../screens/detail_screen.dart';
 import '../theme/app_theme.dart';
 
 /// Tarjeta reutilizable que representa un [Place] en cualquier lista de
 /// la app (Inicio, resultados de categoría, etc.) — Sesión 2.
-/// Accesibilidad y colores de marca aplicados en la Sesión 3.
+/// Accesibilidad y colores de marca aplicados en la Sesión 3. Navegación
+/// con GetX (`Get.to`) desde la Sesión 4, en vez de `Navigator.push` +
+/// `MaterialPageRoute` — Flutter sigue usando `Navigator` por debajo,
+/// `Get.to` solo evita repetir `MaterialPageRoute(builder: ...)` en cada
+/// lugar que navega, y no pide `context` para hacerlo.
 class PlaceCard extends StatelessWidget {
   final Place place;
   const PlaceCard({super.key, required this.place});
@@ -15,27 +21,14 @@ class PlaceCard extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.sm),
       child: InkWell(
-        onTap: () => Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => DetailScreen(place: place)),
+        onTap: () => Get.to(() => DetailScreen(place: place)),
+        child: Semantics(
+          label: '${place.nombre}, categoría ${place.categoria}',
+          hint: 'Toca dos veces para ver el detalle',
+          button: true,
+          excludeSemantics: true,
+          child: _buildContenido(context),
         ),
-        // TODO(sesion-03): borra la línea de abajo y descomenta el bloque completo. (Paso 5 — accesibilidad)
-        // Por qué: sin Semantics, un lector de pantalla solo anuncia los
-        // textos sueltos de la tarjeta, sin contexto — el label/hint de
-        // abajo describe la tarjeta completa como un solo elemento
-        // interactivo, con instrucción de qué hace al tocarla.
-        // excludeSemantics: true evita que el lector de pantalla, además del
-        // label de abajo, vuelva a leer el nombre/categoría/descripción de
-        // _buildContenido() por separado — sin esa línea se anuncian los dos
-        // a la vez, uno detrás del otro.
-        child: _buildContenido(context),
-        // child: Semantics(
-        //   label: '${place.nombre}, categoría ${place.categoria}',
-        //   hint: 'Toca dos veces para ver el detalle',
-        //   button: true,
-        //   excludeSemantics: true,
-        //   child: _buildContenido(context),
-        // ),
       ),
     );
   }

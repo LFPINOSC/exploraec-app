@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import 'bindings/places_binding.dart';
 import 'screens/home_screen.dart';
 import 'screens/map_placeholder_screen.dart';
 import 'screens/favorites_placeholder_screen.dart';
@@ -8,20 +11,20 @@ void main() {
   runApp(const ExploraEcApp());
 }
 
+/// `MaterialApp` → `GetMaterialApp` — Sesión 4. Sigue siendo Material por
+/// debajo (mismo `theme`, mismos widgets); `GetMaterialApp` agrega encima
+/// la navegación de GetX (`Get.to`, usada desde esta sesión en `PlaceCard`
+/// y `AddPlaceScreen`) y `initialBinding`, que registra `PlacesController`
+/// una sola vez, antes de que cualquier pantalla lo necesite.
 class ExploraEcApp extends StatelessWidget {
   const ExploraEcApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'ExploraEC',
-      // TODO(sesion-03): borra la línea de abajo y descomenta el bloque completo. (Paso 1 — aplicar el tema)
-      // Por qué: ThemeData(useMaterial3: true) es el tema genérico de
-      // Flutter — AppTheme.theme aplica la paleta de colores, tipografía
-      // y espaciado propios de ExploraEC en toda la app de una sola vez,
-      // sin tener que repetir estilos pantalla por pantalla.
-      theme: ThemeData(useMaterial3: true),
-      // theme: AppTheme.theme,
+      theme: AppTheme.theme,
+      initialBinding: PlacesBinding(),
       home: const RootShell(),
     );
   }
