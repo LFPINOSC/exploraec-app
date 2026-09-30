@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'bindings/places_binding.dart';
+import 'i18n/app_translations.dart';
 import 'screens/home_screen.dart';
 import 'screens/map_placeholder_screen.dart';
 import 'screens/favorites_placeholder_screen.dart';
@@ -26,6 +27,13 @@ class ExploraEcApp extends StatelessWidget {
       theme: AppTheme.theme,
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.system,
+      // TODO(sesion-04): OPCIONAL — descomenta las tres líneas de abajo (Paso 6B — idioma). No borres nada.
+      // Por qué: `translations` le da a GetX el diccionario de textos,
+      // `locale` elige el idioma con el que arranca y `fallbackLocale` el
+      // que se usa si falta una clave. Con esto, `'clave'.tr` ya funciona.
+      // translations: AppTranslations(),
+      // locale: const Locale('es', 'EC'),
+      // fallbackLocale: const Locale('es', 'EC'),
       initialBinding: PlacesBinding(),
       home: const RootShell(),
     );
@@ -54,11 +62,20 @@ class _RootShellState extends State<RootShell> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _indiceActual,
         onTap: (i) => setState(() => _indiceActual = i),
+        // TODO(sesion-04): OPCIONAL — borra el bloque `items: const [...]` de abajo y descomenta el bloque completo. (Paso 6B — idioma)
+        // Por qué: `.tr` no es una constante (depende del idioma activo), por
+        // eso el `const` desaparece de la lista y de cada ícono que sigue
+        // siéndolo. Los textos fijos de abajo nunca cambiarían de idioma.
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Inicio'),
           BottomNavigationBarItem(icon: Icon(Icons.map), label: 'Mapa'),
           BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'Favoritos'),
         ],
+        // items: [
+        //   BottomNavigationBarItem(icon: const Icon(Icons.home), label: 'inicio'.tr),
+        //   BottomNavigationBarItem(icon: const Icon(Icons.map), label: 'mapa'.tr),
+        //   BottomNavigationBarItem(icon: const Icon(Icons.favorite), label: 'favoritos'.tr),
+        // ],
       ),
     );
   }

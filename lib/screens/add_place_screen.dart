@@ -34,7 +34,11 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // TODO(sesion-04): OPCIONAL — borra la línea de abajo y descomenta el bloque completo. (Paso 6B — idioma)
+      // Por qué: el título fijo no cambia con el idioma; `'agregar_lugar'.tr`
+      // lo busca en el diccionario del idioma activo cada vez que se construye.
       appBar: AppBar(title: const Text('Agregar lugar')),
+      // appBar: AppBar(title: Text('agregar_lugar'.tr)),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Form(

@@ -72,4 +72,28 @@ class PlacesController extends GetxController {
     lugaresEjemplo.add(lugar);
     lugares.add(lugar);
   }
+
+  /// Favoritos en memoria — Paso 6 (opcional). Viven solo mientras la app
+  /// está abierta; la Sesión 7 los persiste con Hive, sin cambiar los
+  /// nombres de abajo (`favoritos`, `esFavorito`, `alternarFavorito`).
+  final RxList<Place> favoritos = <Place>[].obs;
+
+  bool esFavorito(Place lugar) => favoritos.any((p) => p.id == lugar.id);
+
+  /// Otro estado derivado: se calcula a partir de `favoritos`, no se guarda.
+  int get totalFavoritos => favoritos.length;
+
+  // TODO(sesion-04): OPCIONAL — borra la línea de abajo y descomenta el bloque completo. (Paso 6A — favoritos en memoria)
+  // Por qué: el método vacío de abajo no hace nada, por eso el corazón de
+  // `PlaceCard` no cambia al tocarlo. La versión real agrega o quita el
+  // lugar de la lista reactiva `favoritos`: cualquier `Obx` que la lea (el
+  // ícono del corazón, el contador de la pestaña Favoritos) se actualiza solo.
+  void alternarFavorito(Place lugar) {}
+  // void alternarFavorito(Place lugar) {
+  //   if (esFavorito(lugar)) {
+  //     favoritos.removeWhere((p) => p.id == lugar.id);
+  //   } else {
+  //     favoritos.add(lugar);
+  //   }
+  // }
 }
