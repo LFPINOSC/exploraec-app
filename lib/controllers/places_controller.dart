@@ -42,7 +42,7 @@ class PlacesController extends GetxController {
     // sin llamar a nada — el bloque try/catch real es exactamente la
     // misma lógica que `HomeScreen._cargar()` tenía en la Sesión 3
     // (llamar a `fetchLugaresSimulado` y traducir su resultado a los 3
-    // estados), ahora centralizada acá para que cualquier pantalla la
+    // estados), ahora centralizada aquí para que cualquier pantalla la
     // comparta en vez de cada una tener la suya. Se usa `assignAll` (y no
     // `lugares.value = resultado`) porque copia los elementos:
     // `fetchLugaresSimulado` devuelve la lista global `lugaresEjemplo`, y
