@@ -27,7 +27,6 @@ El objetivo de esta sesión es centralizar el estado de la lista de lugares en u
 | `lib/controllers/places_controller.dart` | **Opcional:** borrar `void alternarFavorito(Place lugar) {}` y descomentar el método completo | Paso 6A (opcional) |
 | `lib/main.dart` | **Opcional:** descomentar `translations`, `locale` y `fallbackLocale` (no hay nada que borrar); y en la barra inferior, borrar `items: const [...]` y descomentar `items: [...]` con `.tr` | Paso 6B (opcional) |
 | `lib/screens/home_screen.dart` | **Opcional:** descomentar el `IconButton` de idioma (no hay nada que borrar); y en el menú "⋮", borrar `itemBuilder: ... const [...]` y descomentar la versión con `.tr` | Paso 6B (opcional) |
-| `lib/screens/add_place_screen.dart` | **Opcional:** borrar `appBar: AppBar(title: const Text('Agregar lugar'))` y descomentar la versión con `.tr` | Paso 6B (opcional) |
 
 El Paso 6 (favoritos e idioma) es opcional: no cuenta dentro de los 55 minutos ni bloquea la Sesión 5.
 
