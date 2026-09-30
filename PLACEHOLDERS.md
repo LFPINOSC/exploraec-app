@@ -14,6 +14,7 @@ El objetivo de esta sesión es reemplazar la pestaña "Mapa" (que hasta ahora so
 - `lib/controllers/places_controller.dart` — ya extendido con `posicion`, `estadoPosicion`, `mensajeErrorPosicion`, `cargarPosicion()` y `distanciaA()`.
 - `lib/screens/map_screen.dart` — lee el controller con `Obx`; salvo la capa de marcadores, ver tabla abajo.
 - `lib/screens/detail_screen.dart` — ya acepta `distanciaMetros` opcional (se usa desde el Paso 4).
+- Favoritos en memoria e idioma español/inglés (`lib/i18n/app_translations.dart`) — resultado del Paso 6 opcional de la Sesión 4, ya resuelto en esta rama: el corazón de `PlaceCard` marca favoritos y el botón de idioma de Inicio cambia la barra inferior y el menú "⋮".
 - `pubspec.yaml` — ya incluye `geolocator`, `permission_handler`, `flutter_map`, `latlong2`.
 
 ## Qué descomentar
