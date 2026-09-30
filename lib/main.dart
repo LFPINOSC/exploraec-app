@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'bindings/places_binding.dart';
-import 'i18n/app_translations.dart';
+// TODO(sesion-04): OPCIONAL — descomenta la línea de abajo (Paso 6B — idioma). No borres nada.
+// Por qué: el diccionario de textos vive en su propio archivo; sin este import, `AppTranslations` no existe aquí.
+// import 'i18n/app_translations.dart';
 import 'screens/home_screen.dart';
 import 'screens/map_placeholder_screen.dart';
 import 'screens/favorites_placeholder_screen.dart';
