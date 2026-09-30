@@ -24,7 +24,7 @@ class HomeScreen extends GetView<PlacesController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('ExploraEC'),
+        title: Obx(() => Text('ExploraEC (${controller.total})')),
         actions: [
           PopupMenuButton<String>(
             tooltip: 'Simular estado (solo práctica)',
