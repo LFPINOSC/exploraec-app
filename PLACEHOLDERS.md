@@ -23,6 +23,10 @@ El objetivo de esta sesión es reemplazar la pestaña "Mapa" (que hasta ahora so
 |---|---|---|
 | `lib/services/location_service.dart` | El bloque `Geolocator.checkPermission()`/`requestPermission()` dentro de `obtenerPosicionActual()` | Paso 3 |
 | `lib/screens/map_screen.dart` | El `MarkerLayer` completo (tu posición + un marcador por cada lugar del controller, con navegación al Detalle mostrando la distancia) | Paso 4 |
+| `lib/screens/map_screen.dart` | *(Opcional)* El `floatingActionButton` «Centrar en mi ubicación» (usa el `mapController` ya conectado; no hay nada que borrar) | Paso 7A |
+| `lib/widgets/place_card.dart` | *(Opcional)* El `import` de `location_service.dart` y el `Obx` con la distancia bajo la categoría (no hay nada que borrar) | Paso 7B |
+
+Los bloques `TODO(sesion-05): OPCIONAL` no cuentan dentro de los 55 minutos: son para quien termina antes. Con la rama recién traída la app compila y corre igual sin ellos.
 
 ## Edición manual fuera de este repo (no versionada aquí)
 
