@@ -26,8 +26,8 @@ class ExploraEcApp extends StatelessWidget {
       // Por qué: darkTheme le da a MaterialApp una segunda paleta, y
       // ThemeMode.system elige entre las dos según la preferencia del
       // dispositivo (Ajustes → Pantalla → Tema oscuro), sin código extra.
-      // darkTheme: AppTheme.darkTheme,
-      // themeMode: ThemeMode.system,
+      //darkTheme: AppTheme.darkTheme,
+      themeMode: ThemeMode.system,
       home: const RootShell(),
     );
   }
