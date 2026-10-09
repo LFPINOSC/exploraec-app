@@ -74,16 +74,16 @@ class GastosController extends GetxController {
       // gastos al repositorio, que primero intenta el servidor y, si falla por
       // red o por el propio servidor, devuelve la última copia guardada en Hive
       // (y `desdeCache` pasa a `true` para que la pantalla lo avise).
-      final resultado = await _api.listarGastos(skip: 0, limit: _tamanoPagina);
-      gastos.value = resultado.gastos;
-      totalEnServidor.value = resultado.total;
-      desdeCache.value = false;
+      //final resultado = await _api.listarGastos(skip: 0, limit: _tamanoPagina);
+      //gastos.value = resultado.gastos;
+      //totalEnServidor.value = resultado.total;
+      //desdeCache.value = false;
+      //estado.value = EstadoCarga.exito;
+      final (lista, cache) = await _repository.obtenerGastos();
+      gastos.value = lista;
+      totalEnServidor.value = lista.length;
+      desdeCache.value = cache;
       estado.value = EstadoCarga.exito;
-      // final (lista, cache) = await _repository.obtenerGastos();
-      // gastos.value = lista;
-      // totalEnServidor.value = lista.length;
-      // desdeCache.value = cache;
-      // estado.value = EstadoCarga.exito;
     } on ApiException catch (e) {
       if (e.statusCode == 401) {
         sesionActiva.value = false; // volver al formulario
@@ -102,7 +102,8 @@ class GastosController extends GetxController {
   Future<void> cargarMas() async {
     if (!hayMas) return;
     try {
-      final r = await _api.listarGastos(skip: gastos.length, limit: _tamanoPagina);
+      final r =
+          await _api.listarGastos(skip: gastos.length, limit: _tamanoPagina);
       gastos.addAll(r.gastos);
       totalEnServidor.value = r.total;
     } on ApiException catch (e) {
@@ -115,23 +116,23 @@ class GastosController extends GetxController {
   // Hive de este usuario seguiría en el disco del teléfono (sin cifrar). La
   // versión real además la cierra y la borra (`vaciar`), para que otra
   // persona que use el mismo teléfono no pueda ver estos gastos.
+  //Future<void> salir() async {
+  //_api.cerrarSesion();
+  //gastos.clear();
+  //totalEnServidor.value = 0;
+  //desdeCache.value = false;
+  //estado.value = EstadoCarga.exito;
+  //sesionActiva.value = false;
+  //}
   Future<void> salir() async {
     _api.cerrarSesion();
+    await _repository.vaciar();
     gastos.clear();
     totalEnServidor.value = 0;
     desdeCache.value = false;
     estado.value = EstadoCarga.exito;
     sesionActiva.value = false;
   }
-  // Future<void> salir() async {
-  //   _api.cerrarSesion();
-  //   await _repository.vaciar();
-  //   gastos.clear();
-  //   totalEnServidor.value = 0;
-  //   desdeCache.value = false;
-  //   estado.value = EstadoCarga.exito;
-  //   sesionActiva.value = false;
-  // }
 
   /// Solo práctica (Paso 8): la siguiente petición responderá 401.
   void invalidarTokenParaPruebas() => _api.invalidarTokenParaPruebas();
