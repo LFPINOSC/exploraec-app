@@ -19,6 +19,27 @@ class Place {
     required this.lat,
     required this.lng,
   });
+
+  /// Construye un [Place] a partir de un elemento `node` de la respuesta
+  /// JSON de la Overpass API — Sesión 5. Un nodo real casi nunca trae todos
+  /// los campos: `tags.name` en particular suele faltar (el lugar existe en
+  /// el mapa pero nadie cargó su nombre en OpenStreetMap), así que se arma
+  /// un nombre de reserva a partir de la categoría (`amenity`) antes que
+  /// mostrar un lugar sin nombre.
+  factory Place.fromOverpassElement(Map<String, dynamic> el) {
+    final tags = (el['tags'] as Map?)?.cast<String, dynamic>() ?? const {};
+    final categoria = (tags['amenity'] as String?) ?? 'lugar';
+    final nombre = (tags['name'] as String?) ?? _capitalizar(categoria);
+    return Place(
+      id: 'osm-${el['id']}',
+      nombre: nombre,
+      categoria: _capitalizar(categoria),
+      descripcion: (tags['description'] as String?) ??
+          'Lugar cercano de tipo "$categoria", datos abiertos de OpenStreetMap.',
+      lat: (el['lat'] as num).toDouble(),
+      lng: (el['lon'] as num).toDouble(),
+    );
+  }
 }
 
 final List<Place> lugaresEjemplo = [
