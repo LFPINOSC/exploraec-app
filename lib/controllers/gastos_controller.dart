@@ -32,24 +32,24 @@ class GastosController extends GetxController {
     // Por qué: registro -> login -> listar dependen uno del otro; `await`
     // permite escribirlos en orden. Un 400 en el registro significa "el
     // correo ya existe": se ignora y se sigue al login.
-    mensajeAuth.value = 'Pendiente: conecta el flujo en el Paso 7';
-    autenticando.value = false;
-    // try {
-    //   try {
-    //     await _api.registrar(email, password);
-    //   } on ApiException catch (e) {
-    //     if (e.statusCode != 400) rethrow;
-    //   }
-    //   await _api.login(email, password);
-    //   sesionActiva.value = true;
-    //   await cargarGastos();
-    // } on ApiException catch (e) {
-    //   mensajeAuth.value = e.mensaje;
-    // } catch (e) {
-    //   mensajeAuth.value = 'Error inesperado: $e';
-    // } finally {
-    //   autenticando.value = false;
-    // }
+    //mensajeAuth.value = 'Pendiente: conecta el flujo en el Paso 7';
+    //autenticando.value = false;
+     try {
+       try {
+         await _api.registrar(email, password);
+       } on ApiException catch (e) {
+         if (e.statusCode != 400) rethrow;
+       }
+       await _api.login(email, password);
+       sesionActiva.value = true;
+       await cargarGastos();
+     } on ApiException catch (e) {
+       mensajeAuth.value = e.mensaje;
+     } catch (e) {
+       mensajeAuth.value = 'Error inesperado: $e';
+     } finally {
+       autenticando.value = false;
+     }
   }
 
   Future<void> cargarGastos() async {
@@ -59,24 +59,24 @@ class GastosController extends GetxController {
     // Por qué: las 2 líneas fuerzan éxito con lista vacía, sin llamar a nada.
     // El bloque real traduce el resultado -o la excepción- a los mismos 3
     // estados de siempre; un 401 devuelve al formulario.
-    gastos.value = [];
-    estado.value = EstadoCarga.exito;
-    // try {
-    //   final resultado = await _api.listarGastos(skip: 0, limit: _tamanoPagina);
-    //   gastos.value = resultado.gastos;
-    //   totalEnServidor.value = resultado.total;
-    //   estado.value = EstadoCarga.exito;
-    // } on ApiException catch (e) {
-    //   if (e.statusCode == 401) {
-    //     sesionActiva.value = false; // volver al formulario
-    //     mensajeAuth.value = e.mensaje; // y explicar por qué
-    //   }
-    //   mensajeError.value = e.mensaje;
-    //   estado.value = EstadoCarga.error;
-    // } catch (e) {
-    //   mensajeError.value = 'Error inesperado: $e';
-    //   estado.value = EstadoCarga.error;
-    // }
+    //gastos.value = [];
+    //estado.value = EstadoCarga.exito;
+     try {
+       final resultado = await _api.listarGastos(skip: 0, limit: _tamanoPagina);
+       gastos.value = resultado.gastos;
+       totalEnServidor.value = resultado.total;
+       estado.value = EstadoCarga.exito;
+     } on ApiException catch (e) {
+       if (e.statusCode == 401) {
+         sesionActiva.value = false; // volver al formulario
+         mensajeAuth.value = e.mensaje; // y explicar por qué
+       }
+       mensajeError.value = e.mensaje;
+       estado.value = EstadoCarga.error;
+     } catch (e) {
+       mensajeError.value = 'Error inesperado: $e';
+       estado.value = EstadoCarga.error;
+     }
   }
 
   /// Siguiente página (skip = lo ya cargado). No cambia `estado`: el error
