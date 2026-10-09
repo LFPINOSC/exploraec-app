@@ -54,18 +54,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
               TextFormField(
                 controller: _email,
                 keyboardType: TextInputType.emailAddress,
-                decoration: const InputDecoration(labelText: 'Correo', border: OutlineInputBorder()),
+                decoration: const InputDecoration(
+                    labelText: 'Correo', border: OutlineInputBorder()),
                 // TODO(sesion-08) Paso 3: descomenta la línea de abajo (validar el correo).
-                // validator: Validadores.correo,
+                validator: Validadores.correo,
               ),
               const SizedBox(height: AppSpacing.md),
               TextFormField(
                 controller: _password,
                 obscureText: true,
                 decoration: const InputDecoration(
-                    labelText: 'Contraseña (8 a 72 caracteres)', border: OutlineInputBorder()),
+                    labelText: 'Contraseña (8 a 72 caracteres)',
+                    border: OutlineInputBorder()),
                 // TODO(sesion-08) Paso 3: descomenta la línea de abajo (validar la contraseña).
-                // validator: Validadores.password,
+                validator: Validadores.password,
               ),
               const SizedBox(height: AppSpacing.md),
               Obx(() => _auth.mensajeError.value.isEmpty
@@ -73,12 +75,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   : Padding(
                       padding: const EdgeInsets.only(bottom: AppSpacing.md),
                       child: Text(_auth.mensajeError.value,
-                          style: TextStyle(color: Theme.of(context).colorScheme.error)),
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.error)),
                     )),
               Obx(() => FilledButton(
                     onPressed: _auth.cargando.value ? null : _enviar,
                     child: _auth.cargando.value
-                        ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(strokeWidth: 2))
+                        ? const SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(strokeWidth: 2))
                         : const Text('Crear cuenta'),
                   )),
             ],

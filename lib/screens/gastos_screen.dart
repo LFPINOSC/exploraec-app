@@ -30,7 +30,7 @@ class GastosScreen extends GetView<GastosController> {
       // respondería 401. El `Obx` lee `estaAutenticado`, así que la pantalla
       // cambia sola al iniciar o cerrar sesión.
       // TODO(sesion-08) Paso 2: descomenta la línea de abajo (pantalla sin sesión).
-      // if (!auth.estaAutenticado) return const SinSesionView();
+      if (!auth.estaAutenticado) return const SinSesionView();
       return _buildGastos(context, auth);
     });
   }
@@ -38,7 +38,8 @@ class GastosScreen extends GetView<GastosController> {
   Widget _buildGastos(BuildContext context, AuthController auth) {
     return Scaffold(
       appBar: AppBar(
-        title: Obx(() => Text('${'gastos'.tr} (${controller.totalEnServidor.value})')),
+        title: Obx(
+            () => Text('${'gastos'.tr} (${controller.totalEnServidor.value})')),
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
@@ -51,24 +52,28 @@ class GastosScreen extends GetView<GastosController> {
               if (valor == 'invalidar') auth.invalidarTokenParaPruebas();
               // Por qué: pantalla opcional del Paso 9 (cambiar contraseña).
               // TODO(sesion-08) OPCIONAL Paso 9: descomenta la línea de abajo (abrir la pantalla).
-              // if (valor == 'password') Get.to(() => const CambiarPasswordScreen());
+              if (valor == 'password')
+                Get.to(() => const CambiarPasswordScreen());
             },
             itemBuilder: (context) => [
               // TODO(sesion-08) OPCIONAL Paso 9: descomenta la línea de abajo (opción del menú).
-              // const PopupMenuItem(value: 'password', child: Text('Cambiar contraseña')),
+              const PopupMenuItem(
+                  value: 'password', child: Text('Cambiar contraseña')),
               const PopupMenuItem(value: 'salir', child: Text('Cerrar sesión')),
               if (kDebugMode)
-                const PopupMenuItem(value: 'invalidar', child: Text('Invalidar token (solo práctica)')),
+                const PopupMenuItem(
+                    value: 'invalidar',
+                    child: Text('Invalidar token (solo práctica)')),
             ],
           ),
         ],
       ),
       // Por qué: el botón «+» abre el formulario vacío para crear un gasto.
       // TODO(sesion-08) Paso 5: descomenta las 4 líneas de abajo (botón «+»).
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () => Get.to(() => const GastoFormScreen()),
-      //   child: const Icon(Icons.add),
-      // ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => Get.to(() => const GastoFormScreen()),
+        child: const Icon(Icons.add),
+      ),
       body: Obx(() {
         if (controller.estado.value == EstadoCarga.cargando) {
           return const LoadingView(mensaje: 'Cargando gastos...');
@@ -80,7 +85,8 @@ class GastosScreen extends GetView<GastosController> {
           );
         }
         if (controller.gastos.isEmpty) {
-          return const EmptyView(mensaje: 'Aún no registras gastos en este viaje');
+          return const EmptyView(
+              mensaje: 'Aún no registras gastos en este viaje');
         }
         return Column(
           children: [
@@ -119,17 +125,18 @@ class GastosScreen extends GetView<GastosController> {
           subtitle: Text('${g.categoria} · ${g.fecha}'),
           // Por qué: tocar una fila abre el mismo formulario, ya relleno.
           // TODO(sesion-08) Paso 6: descomenta la línea de abajo (tocar para editar).
-          // onTap: () => Get.to(() => GastoFormScreen(gasto: g)),
+          onTap: () => Get.to(() => GastoFormScreen(gasto: g)),
           trailing: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(g.monto.toStringAsFixed(2), style: Theme.of(context).textTheme.titleMedium),
+              Text(g.monto.toStringAsFixed(2),
+                  style: Theme.of(context).textTheme.titleMedium),
               // TODO(sesion-08) Paso 6: descomenta las 5 líneas de abajo (botón de eliminar).
-              // IconButton(
-              //   icon: const Icon(Icons.delete_outline),
-              //   tooltip: 'Eliminar',
-              //   onPressed: () => confirmarEliminar(context, g),
-              // ),
+              IconButton(
+                icon: const Icon(Icons.delete_outline),
+                tooltip: 'Eliminar',
+                onPressed: () => confirmarEliminar(context, g),
+              ),
             ],
           ),
         );
@@ -146,8 +153,12 @@ class GastosScreen extends GetView<GastosController> {
         title: Text('¿Eliminar "${g.descripcion}"?'),
         content: const Text('Esta acción no se puede deshacer.'),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(dialogo, false), child: const Text('Cancelar')),
-          FilledButton(onPressed: () => Navigator.pop(dialogo, true), child: const Text('Eliminar')),
+          TextButton(
+              onPressed: () => Navigator.pop(dialogo, false),
+              child: const Text('Cancelar')),
+          FilledButton(
+              onPressed: () => Navigator.pop(dialogo, true),
+              child: const Text('Eliminar')),
         ],
       ),
     );
