@@ -116,7 +116,7 @@ class AiAssistantService {
               : 'El asistente respondió con un error (código ${e.response?.statusCode}).');
         default:
           throw AsistenteException(
-              'No se pudo conectar con el asistente. Revisa que el proxy esté encendido y que la dirección sea la de tu entorno.');
+              'No se pudo conectar con el asistente. Revisa que el proxy esté encendido.');
       }
     }
   }
