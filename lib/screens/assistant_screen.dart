@@ -134,7 +134,7 @@ class _AssistantScreenState extends State<AssistantScreen> {
             ),
           ),
           const SizedBox(height: AppSpacing.md),
-          // TODO(sesion-09) OPCIONAL Paso 8: descomenta las 17 líneas de abajo (preguntas sugeridas).
+          // TODO(sesion-09) OPCIONAL Paso 9: descomenta las 17 líneas de abajo (preguntas sugeridas).
           // Wrap(
           //   spacing: AppSpacing.sm,
           //   runSpacing: AppSpacing.sm,

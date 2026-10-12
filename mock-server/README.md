@@ -48,7 +48,7 @@ node mock-server.js
 
 ## Contrato
 
-`POST /asistente`, con la cabecera `Authorization: Bearer <token>` (el proxy no la lee ni la registra: en un proxy real se reenviaría al backend si hiciera falta actuar en nombre de la persona).
+`POST /asistente`, con la cabecera `Authorization: Bearer <token>`. El proxy **nunca la registra**; solo la reenvía al servidor MCP del backend (ver «Conexión con el MCP del backend», Paso 8).
 
 Petición:
 
@@ -76,6 +76,26 @@ Errores (siempre `{ "detail": "mensaje legible" }`, que la app muestra tal cual)
 
 En modo GEMINI el proxy valida la respuesta del modelo antes de enviarla: una acción incompleta, de otro tipo o con una categoría inexistente se descarta y solo llega el texto.
 
+## Conexión con el MCP del backend (demo del Paso 8)
+
+El backend de gastos (módulo 2) publica un **servidor MCP** en `/mcp` con 7 herramientas y acepta el mismo token que la app. En el Paso 8 el proxy se conecta a él (`mcp-cliente.js`) y llama a **una sola herramienta de solo lectura**, `resumen_gastos`, con el token de la persona. Así la IA recibe el resumen que da el backend y no el que mande la app.
+
+- Es un **cliente MCP mínimo**, escrito a mano para que se vea el protocolo (`initialize` → `initialized` → `tools/call`). En un proyecto real se usaría el SDK oficial de MCP.
+- Es **solo una demo**: el programa decide qué herramienta llamar (siempre la misma). **No es un agente.** En un agente real el modelo elegiría entre varias herramientas.
+- **Camino correcto**: el agente vive en el servidor, el modelo solo ve una **lista blanca** de herramientas de **solo lectura**, hay un **tope de iteraciones** y límites de uso, y las acciones que cambian datos vuelven a la app como propuesta para que la persona confirme (como en el Paso 5).
+- Si el backend o el MCP no responden, el proxy sigue con el resumen que mandó la app. La respuesta lleva la cabecera `X-Resumen-Origen: mcp` o `app` para saber cuál se usó.
+- Variable de entorno `MCP_URL` (por defecto `http://localhost:8000/mcp/`, con la barra final).
+
+### Prueba de extremo a extremo
+
+Con el backend y el proxy encendidos (usa el correo y la contraseña de tu usuario en la app):
+
+```bash
+node probar-e2e.js tu-correo@ejemplo.com tu-contraseña
+```
+
+Comprueba cuatro cosas, con ✅ o ❌: (1) el backend está sano, (2) el inicio de sesión da un token, (3) el MCP del backend publica `resumen_gastos` y devuelve tus categorías, (4) el proxy, al que se le manda un resumen **vacío** a propósito, responde usando el resumen del backend. Antes de descomentar el Paso 8, el 4 falla con un mensaje que lo explica. Otras direcciones: `BACKEND_URL`, `PROXY_URL` y `MCP_URL`.
+
 ## Probar el proxy sin la app
 
 Con el proxy encendido, desde la carpeta raíz del proyecto (en PowerShell usa `curl.exe` en vez de `curl`):
@@ -102,5 +122,5 @@ En el emulador Android la app usa por defecto `http://10.0.2.2:3000` (valor de `
 ## Seguridad
 
 - La clave solo se lee de la variable de entorno; el proxy nunca la imprime ni la guarda, y viaja en una cabecera (no en la URL) hacia Google.
-- El registro del proxy muestra el tamaño y los **nombres** de los campos recibidos, nunca su contenido.
+- El registro del proxy muestra el tamaño y los **nombres** de los campos recibidos, nunca su contenido ni el token.
 - Si una clave se filtra, se crea otra en AI Studio y se desactiva la anterior.
