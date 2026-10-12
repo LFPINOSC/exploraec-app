@@ -11,11 +11,16 @@
 //
 // Sin dependencias externas: solo Node.js 18 o superior (usa fetch).
 //
+// Además (Paso 8, DEMO): con el token de la persona, el proxy puede pedir el resumen de gastos
+// directamente al backend por MCP (ver mcp-cliente.js), en vez de fiarse del que mande la app.
+// Aún no es un agente: el proxy siempre llama a la misma herramienta de solo lectura.
+//
 // Contrato:  POST /asistente   (Authorization: Bearer <token> en la cabecera)
 //   cuerpo:    { "consulta": "...", "resumen": { "categorias": [...], "total_general": 0 } }
 //   respuesta: { "respuesta": "...", "accion": { tipo, descripcion, monto, categoria } }   (accion es opcional)
 
 const http = require('http');
+const { obtenerResumenPorMcp } = require('./mcp-cliente');
 
 const PUERTO = Number(process.env.PORT) || 3000;
 const CLAVE = (process.env.GEMINI_API_KEY || '').trim();
@@ -189,8 +194,8 @@ async function responderConGemini(consulta, resumen) {
 // ─────────────────────────────── Servidor HTTP ───────────────────────────────
 
 const servidor = http.createServer((req, res) => {
-  const enviar = (codigo, cuerpo) => {
-    res.writeHead(codigo, { 'Content-Type': 'application/json; charset=utf-8' });
+  const enviar = (codigo, cuerpo, extra = {}) => {
+    res.writeHead(codigo, { 'Content-Type': 'application/json; charset=utf-8', ...extra });
     res.end(JSON.stringify(cuerpo));
   };
 
@@ -218,11 +223,25 @@ const servidor = http.createServer((req, res) => {
     const filas = cuerpo.resumen && Array.isArray(cuerpo.resumen.categorias) ? cuerpo.resumen.categorias.length : 0;
     console.log(`Petición: ${bruto.length} bytes · campos: ${Object.keys(cuerpo).join(', ')} · categorías en el resumen: ${filas}`);
 
+    // De dónde sale el resumen que se le da a la IA: por defecto, el que mandó la app.
+    let origen = 'app';
+
+    // Por qué: el resumen que manda la app lo puede alterar cualquiera; el backend, no. Con el MISMO token de la
+    // persona, el proxy pide el resumen por MCP (herramienta de solo lectura) y lo usa en lugar del de la app.
+    // Si el backend no responde, el proxy sigue con el resumen de la app (el asistente no se cae).
+    const delBackend = await obtenerResumenPorMcp(req.headers.authorization);
+    if (delBackend) {
+      cuerpo.resumen = delBackend;
+      origen = 'mcp';
+      console.log('Resumen obtenido del backend por MCP (resumen_gastos)');
+    }
+
     try {
       const resultado = CLAVE
         ? await responderConGemini(cuerpo.consulta, cuerpo.resumen)
         : responderConReglas(cuerpo.consulta, cuerpo.resumen);
-      enviar(200, resultado);
+      // X-Resumen-Origen permite comprobar (por ejemplo con probar-e2e.js) de dónde salió el resumen.
+      enviar(200, resultado, { 'X-Resumen-Origen': origen });
     } catch (e) {
       const codigo = e instanceof ErrorProveedor ? e.codigo : 500;
       console.log(`Error al responder (código ${codigo})`);

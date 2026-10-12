@@ -1,6 +1,6 @@
 # Placeholders de esta rama (sesion-10)
 
-Punto de partida: ExploraEC con la Sesión 9 resuelta (Asistente ExploraIA con proxy, confirmación humana y preguntas sugeridas). Tráela con:
+Punto de partida: ExploraEC con la Sesión 9 resuelta (Asistente ExploraIA con proxy, confirmación humana, resumen pedido al backend por MCP y preguntas sugeridas). Tráela con:
 
 ```bash
 git fetch starter
