@@ -229,7 +229,7 @@ const servidor = http.createServer((req, res) => {
     // Por qué: el resumen que manda la app lo puede alterar cualquiera; el backend, no. Con el MISMO token de la
     // persona, el proxy pide el resumen por MCP (herramienta de solo lectura) y lo usa en lugar del de la app.
     // Si el backend no responde, el proxy sigue con el resumen de la app (el asistente no se cae).
-    // TODO(sesion-09) Paso 8: descomenta las 5 líneas de abajo.
+    // TODO(sesion-09) Paso 8: descomenta las 6 líneas de abajo.
     // const delBackend = await obtenerResumenPorMcp(req.headers.authorization);
     // if (delBackend) {
     //   cuerpo.resumen = delBackend;

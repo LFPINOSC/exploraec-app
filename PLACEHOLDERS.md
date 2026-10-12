@@ -28,7 +28,7 @@ El objetivo de esta sesión es el Asistente ExploraIA: una pestaña donde la per
 |---|---|---|
 | `lib/screens/assistant_screen.dart` | Pedir el resumen, llamar al proxy y mostrar la respuesta (3 líneas) | 4 |
 | `lib/screens/assistant_screen.dart` | Pedir confirmación cuando la IA propone una acción (1 línea) | 5 |
-| `mock-server/mock-server.js` | Pedir el resumen al backend por MCP con el token de la persona (5 líneas, dentro del manejador de `POST /asistente`) | 8 |
+| `mock-server/mock-server.js` | Pedir el resumen al backend por MCP con el token de la persona (6 líneas, dentro del manejador de `POST /asistente`) | 8 |
 | `lib/screens/assistant_screen.dart` | Preguntas sugeridas (`Wrap` con chips) | 9 (opcional) |
 
 ## Pruebas
