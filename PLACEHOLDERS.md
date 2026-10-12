@@ -8,13 +8,13 @@ git checkout starter/sesion-09 -- lib test pubspec.yaml PLACEHOLDERS.md mock-ser
 flutter pub get
 ```
 
-El objetivo de esta sesión es el Asistente ExploraIA: una pestaña donde la persona pregunta por sus gastos, conectada a un **proxy** local (`mock-server/`, modo mock, sin ninguna clave de IA), enviando solo el resumen por categoría y pidiendo confirmación antes de registrar nada.
+El objetivo de esta sesión es el Asistente ExploraIA: una pestaña donde la persona pregunta por sus gastos, conectada a un **proxy** local (`mock-server/`), que llama a Gemini con una clave gratuita guardada solo en la variable de entorno `GEMINI_API_KEY` (o responde con reglas si no hay clave), enviando solo el resumen por categoría y pidiendo confirmación antes de registrar nada.
 
 **Todos los bloques son solo de descomentar**: nada que borrar ni copiar. Selecciona las líneas comentadas que están **debajo** de `TODO(sesion-09) Paso N` (no el `TODO` ni el «Por qué») y presiona `Ctrl + /` (`Cmd + /` en Mac).
 
 ## Archivos ya completos (sin `TODO`)
-- `mock-server/mock-server.js` — el proxy (Node 18 o superior, sin dependencias): `POST /asistente`, reglas en modo mock, `PORT` configurable. No lee ni registra la cabecera `Authorization`; solo registra el tamaño y los nombres de los campos que recibe.
-- `mock-server/README.md` — contrato, URL según el entorno y qué reconoce el mock. `ejemplo-consulta.json` y `ejemplo-registro.json` sirven para probar el proxy con `curl`, sin la app.
+- `mock-server/mock-server.js` — el proxy (Node 18 o superior, sin dependencias): `POST /asistente`. Con `GEMINI_API_KEY` en el entorno llama a Gemini (modelo `gemini-3.5-flash-lite`, cambiable con `GEMINI_MODEL`) y valida su respuesta; sin clave responde con reglas. Traduce 429/502/504 a mensajes legibles. No lee ni registra la cabecera `Authorization` ni la clave; solo registra el tamaño y los nombres de los campos que recibe.
+- `mock-server/README.md` — cómo obtener la clave gratuita, los dos modos, el contrato, los errores y qué reconoce el modo reglas. `ejemplo-consulta.json` y `ejemplo-registro.json` sirven para probar el proxy con `curl`, sin la app.
 - `lib/services/ai_assistant_service.dart` — `kAiBackendUrl` (`--dart-define=LLM_BACKEND_URL=...`), `RespuestaIA`, `AccionPropuesta` (validada: una acción incompleta se descarta) y `AiAssistantService.preguntar(consulta, resumen)`, con errores traducidos a mensajes legibles. No lleva ninguna clave de IA.
 - `lib/models/resumen_gastos.dart` y `GastosApiService.obtenerResumen()` (`GET /gastos/resumen`) con `GastosController.obtenerResumen()`.
 - `lib/screens/assistant_screen.dart` — la pantalla completa; solo faltan los bloques de abajo. Incluye el diálogo de confirmación (`confirmarAccion`).
