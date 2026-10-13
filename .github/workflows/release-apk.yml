@@ -1,4 +1,9 @@
-# Compila, prueba y publica el APK de la app — Sesión 10.
+# Entrega continua (CD): compila, prueba y publica el APK de la app — Sesión 10.
+#
+# Relación con el otro workflow:
+#   - ci.yml      → CI, corre en CADA cambio (push o pull request): analiza y prueba.
+#   - este archivo → CD, corre en CADA VERSIÓN (etiqueta «v…»): vuelve a verificar,
+#                    compila el APK de release y lo publica en un Release de GitHub.
 #
 # Se ejecuta de dos formas:
 #   1. Al subir una etiqueta que empiece con «v» (por ejemplo, v1.0.0): además de
@@ -9,6 +14,7 @@
 # La dirección del backend se puede cambiar sin tocar este archivo: en GitHub,
 # Settings → Secrets and variables → Actions → Variables → API_BASE_URL.
 # Si no existe, se usa la del emulador Android (http://10.0.2.2:8000).
+# (Una variable se puede ver; si fuera una llave de firma, iría en «Secrets».)
 
 name: Release APK
 
@@ -42,6 +48,9 @@ jobs:
 
       - name: Descargar las dependencias
         run: flutter pub get
+
+      - name: Analizar el código
+        run: flutter analyze
 
       - name: Ejecutar las pruebas
         run: flutter test

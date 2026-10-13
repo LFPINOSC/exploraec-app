@@ -4,20 +4,25 @@ Punto de partida: ExploraEC con la Sesión 9 resuelta (Asistente ExploraIA con p
 
 ```bash
 git fetch starter
-git checkout starter/sesion-10 -- lib test pubspec.yaml PLACEHOLDERS.md docs .github
+git checkout starter/sesion-10 -- lib test pubspec.yaml PLACEHOLDERS.md docs .github .claude AGENTS.md CLAUDE.md .gitignore
 flutter pub get
 ```
 
-El objetivo de esta sesión es el **cierre de calidad** de ExploraEC: capturar los errores que nadie esperaba, probar con pruebas de widgets, auditar secretos, generar el APK con GitHub Actions y preparar la entrega del Proyecto Final. No agrega funcionalidad nueva ni dependencias nuevas.
+El objetivo de esta sesión es el **cierre de calidad y entrega continua** de ExploraEC: capturar los errores que nadie esperaba, probar con pruebas de widgets, auditar secretos, poner una **puerta de calidad (CI) en GitHub Actions**, trabajar con un **agente de código dentro de un arnés** (archivo de contexto, permisos, modo plan) y publicar el APK con un **release automático (CD)**. No agrega dependencias nuevas; la funcionalidad nueva (filtrar los gastos por categoría) la escribe el agente en la práctica.
 
-**Todos los bloques son solo de descomentar**: nada que borrar ni copiar. Selecciona las líneas comentadas que están **debajo** de `TODO(sesion-10) Paso N` (no el `TODO` ni el «Por qué») y presiona `Ctrl + /` (`Cmd + /` en Mac).
+**Los bloques de código son solo de descomentar**: nada que borrar ni copiar. Selecciona las líneas comentadas que están **debajo** de `TODO(sesion-10) Paso N` (no el `TODO` ni el «Por qué») y presiona `Ctrl + /` (`Cmd + /` en Mac). Los pasos del agente (Paso 7) son texto que se le pide a la herramienta.
 
 ## Archivos ya completos (sin `TODO`)
 - `lib/widgets/error_pantalla_view.dart` — la vista amistosa que reemplaza a la pantalla roja.
 - `lib/screens/pantalla_con_fallo.dart` — pantalla que falla a propósito (solo práctica).
 - `lib/screens/gastos_screen.dart` — el menú «⋮» suma, solo en modo depuración, «Provocar error de pantalla» y «Provocar error asíncrono».
 - `lib/main.dart` — llama a `ReporteErrores.instalar()` antes de `runApp`.
-- `.github/workflows/release-apk.yml` — compila, prueba y publica el APK al subir una etiqueta `v*`.
+- `.github/workflows/ci.yml` — **CI**: en cada push y pull request analiza el código y ejecuta las pruebas.
+- `.github/workflows/release-apk.yml` — **CD**: al subir una etiqueta `v*` verifica, compila el APK y lo publica en un Release.
+- `AGENTS.md` — archivo de contexto del proyecto, común a Claude Code, Codex y Antigravity. Trae una sección «Reglas del estudiante» **para completar en el Paso 6**.
+- `CLAUDE.md` — importa `AGENTS.md` para Claude Code (que solo lee `AGENTS.md` por sí mismo cuando no existe `CLAUDE.md`).
+- `.claude/settings.json` — permisos de ejemplo para Claude Code (puede correr `flutter analyze`/`flutter test`; no puede leer `.env`, hacer `git push` ni crear etiquetas).
+- `docs/arnes-paso-a-paso.md` — tabla de equivalencias entre Claude Code, Codex y Antigravity, y el hook opcional (Paso 11).
 - `docs/README-plantilla.md` y `docs/lista-de-verificacion.md` — plantilla de `README.md` y la rúbrica del Proyecto Final convertida en preguntas.
 
 ## Qué descomentar
@@ -26,7 +31,9 @@ El objetivo de esta sesión es el **cierre de calidad** de ExploraEC: capturar l
 |---|---|---|
 | `lib/utils/reporte_errores.dart` | `instalar()`: capturar errores no controlados | 2 |
 | `test/sesion_10_test.dart` | Tres pruebas de widgets | 3 |
-| `lib/screens/gastos_screen.dart` | Opción «Acerca de» y la línea que abre las licencias (2 bloques) | 8 (opcional) |
+| `lib/screens/gastos_screen.dart` | Opción «Acerca de» y la línea que abre las licencias (2 bloques) | 10 (opcional) |
+
+Los Pasos 5 (CI), 6 (arnés), 7 (código con el agente), 8 (release) y 9 (APK) no tienen bloques por descomentar: usan los archivos de arriba, Git y GitHub.
 
 ## Pruebas
 
@@ -37,5 +44,6 @@ El objetivo de esta sesión es el **cierre de calidad** de ExploraEC: capturar l
 | 1 (rama recién traída) | 24 | 1 |
 | 2 | 25 | 0 |
 | 3 | 28 | 0 |
+| 7 (el agente agrega al menos una prueba) | 29 o más | 0 |
 
 Ejecutarlas: `flutter test`.

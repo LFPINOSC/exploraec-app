@@ -13,3 +13,7 @@ ios/Flutter/Generated.xcconfig
 google-services.json
 GoogleService-Info.plist
 .env
+
+# Configuración personal de agentes (no se comparte)
+.claude/settings.local.json
+CLAUDE.local.md
