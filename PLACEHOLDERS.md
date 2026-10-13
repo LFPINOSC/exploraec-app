@@ -4,7 +4,7 @@ Punto de partida: ExploraEC con la Sesión 9 resuelta (Asistente ExploraIA con p
 
 ```bash
 git fetch starter
-git checkout starter/sesion-10 -- lib test pubspec.yaml PLACEHOLDERS.md docs .github .claude AGENTS.md CLAUDE.md
+git checkout starter/sesion-10 -- lib test pubspec.yaml PLACEHOLDERS.md docs .github .claude AGENTS.md CLAUDE.md analysis_options.yaml
 flutter pub get
 ```
 
@@ -24,6 +24,7 @@ El **Paso 4** te pide agregar a tu `.gitignore` tres líneas (`.env`, `.claude/s
 - `AGENTS.md` — archivo de contexto del proyecto, común a Claude Code, Codex y Antigravity. Trae una sección «Reglas del estudiante» **para completar en el Paso 6**.
 - `CLAUDE.md` — importa `AGENTS.md` para Claude Code (que solo lee `AGENTS.md` por sí mismo cuando no existe `CLAUDE.md`).
 - `.claude/settings.json` — permisos de ejemplo para Claude Code (puede correr `flutter analyze`/`flutter test`; no puede leer `.env`, hacer `git push` ni crear etiquetas).
+- `analysis_options.yaml` — el mismo archivo de `flutter create` con una línea más: excluye `lib/playground/` (los ejercicios de la Sesión 1, que usan `print` a propósito) para que `flutter analyze` no marque avisos que no son de la app.
 - `docs/arnes-paso-a-paso.md` — tabla de equivalencias entre Claude Code, Codex y Antigravity, y el hook opcional (Paso 11).
 - `docs/README-plantilla.md` y `docs/lista-de-verificacion.md` — plantilla de `README.md` y la rúbrica del Proyecto Final convertida en preguntas.
 

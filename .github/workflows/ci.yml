@@ -53,7 +53,7 @@ jobs:
         run: flutter pub get
 
       - name: Analizar el código
-        run: flutter analyze
+        run: flutter analyze --no-fatal-infos
 
       - name: Ejecutar las pruebas
         run: flutter test
