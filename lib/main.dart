@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -56,6 +57,14 @@ class ExploraEcApp extends StatelessWidget {
       translations: AppTranslations(),
       locale: SettingsService.idioma,
       fallbackLocale: const Locale('es', 'EC'),
+      // Textos propios de Flutter (licencias, selector de fecha, etc.) en el
+      // mismo idioma que la app.
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [Locale('es', 'EC'), Locale('en', 'US')],
       initialBinding: PlacesBinding(),
       home: const RootShell(),
     );

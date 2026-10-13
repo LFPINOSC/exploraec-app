@@ -8,7 +8,7 @@ git checkout starter/sesion-10 -- lib test pubspec.yaml PLACEHOLDERS.md docs .gi
 flutter pub get
 ```
 
-El objetivo de esta sesión es el **cierre de calidad y entrega continua** de ExploraEC: capturar los errores que nadie esperaba, probar con pruebas de widgets, auditar secretos, poner una **puerta de calidad (CI) en GitHub Actions**, trabajar con un **agente de código dentro de un arnés** (archivo de contexto, permisos, modo plan) y publicar el APK con un **release automático (CD)**. No agrega dependencias nuevas; la funcionalidad nueva (filtrar los gastos por categoría) la escribe el agente en la práctica.
+El objetivo de esta sesión es el **cierre de calidad y entrega continua** de ExploraEC: capturar los errores que nadie esperaba, probar con pruebas de widgets, auditar secretos, poner una **puerta de calidad (CI) en GitHub Actions**, trabajar con un **agente de código dentro de un arnés** (archivo de contexto, permisos, modo plan) y publicar el APK con un **release automático (CD)**. Su único paquete nuevo es `flutter_localizations`, que viene con el SDK de Flutter (textos del sistema en español); la funcionalidad nueva (filtrar los gastos por categoría) la escribe el agente en la práctica.
 
 El **Paso 4** te pide agregar a tu `.gitignore` tres líneas (`.env`, `.claude/settings.local.json` y `CLAUDE.local.md`); por eso el `.gitignore` no se copia desde la rama.
 
