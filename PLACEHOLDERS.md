@@ -4,11 +4,13 @@ Punto de partida: ExploraEC con la Sesión 9 resuelta (Asistente ExploraIA con p
 
 ```bash
 git fetch starter
-git checkout starter/sesion-10 -- lib test pubspec.yaml PLACEHOLDERS.md docs .github .claude AGENTS.md CLAUDE.md .gitignore
+git checkout starter/sesion-10 -- lib test pubspec.yaml PLACEHOLDERS.md docs .github .claude AGENTS.md CLAUDE.md
 flutter pub get
 ```
 
 El objetivo de esta sesión es el **cierre de calidad y entrega continua** de ExploraEC: capturar los errores que nadie esperaba, probar con pruebas de widgets, auditar secretos, poner una **puerta de calidad (CI) en GitHub Actions**, trabajar con un **agente de código dentro de un arnés** (archivo de contexto, permisos, modo plan) y publicar el APK con un **release automático (CD)**. No agrega dependencias nuevas; la funcionalidad nueva (filtrar los gastos por categoría) la escribe el agente en la práctica.
+
+El **Paso 4** te pide agregar a tu `.gitignore` tres líneas (`.env`, `.claude/settings.local.json` y `CLAUDE.local.md`); por eso el `.gitignore` no se copia desde la rama.
 
 **Los bloques de código son solo de descomentar**: nada que borrar ni copiar. Selecciona las líneas comentadas que están **debajo** de `TODO(sesion-10) Paso N` (no el `TODO` ni el «Por qué») y presiona `Ctrl + /` (`Cmd + /` en Mac). Los pasos del agente (Paso 7) son texto que se le pide a la herramienta.
 
@@ -32,8 +34,9 @@ El objetivo de esta sesión es el **cierre de calidad y entrega continua** de Ex
 | `lib/utils/reporte_errores.dart` | `instalar()`: capturar errores no controlados | 2 |
 | `test/sesion_10_test.dart` | Tres pruebas de widgets | 3 |
 | `lib/screens/gastos_screen.dart` | Opción «Acerca de» y la línea que abre las licencias (2 bloques) | 10 (opcional) |
+| `.claude/settings.json` | Un bloque `hooks` que formatea tras cada edición del agente (se agrega a mano desde `docs/arnes-paso-a-paso.md`) | 11 (opcional) |
 
-Los Pasos 5 (CI), 6 (arnés), 7 (código con el agente), 8 (release) y 9 (APK) no tienen bloques por descomentar: usan los archivos de arriba, Git y GitHub.
+Los Pasos 5 (CI), 6 (arnés), 7 (código con el agente), 8 (entrega continua) y 9 (APK) no tienen bloques por descomentar: usan los archivos de arriba, Git y GitHub.
 
 ## Pruebas
 
