@@ -7,6 +7,9 @@
 # Es la «puerta de calidad» del proyecto. Sirve igual para el código que escribes
 # tú que para el que escribe un agente de IA: lo que no pasa la puerta, no entra.
 #
+# Si una subida no dispara la ejecución (a veces pasa en un repositorio recién creado),
+# puedes lanzarla a mano desde la pestaña Actions.
+#
 # Este workflow NO publica nada. La publicación del APK (entrega continua) está en
 # release-apk.yml y se dispara con una etiqueta de versión.
 
@@ -16,6 +19,7 @@ on:
   push:
     branches: ['**']
   pull_request:
+  workflow_dispatch: # también se puede ejecutar a mano: pestaña Actions → «CI» → «Run workflow»
 
 permissions:
   contents: read # este workflow solo lee el código
